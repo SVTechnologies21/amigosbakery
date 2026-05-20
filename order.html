@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Cakes — Sweet Layers Bakery</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FDF8F2;--warm:#F2E8D8;--rose:#D4857A;--rose-deep:#B5584E;
+  --brown:#5C3220;--brown-mid:#7A4530;--brown-light:#A06448;
+  --gold:#C8962E;--gold-light:#E8C878;--text:#2A1208;--muted:#7A5848;
+  --white:#fff;--dark:#1A0A04;--green:#25D366;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:200;background:rgba(253,248,242,.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(92,50,32,.1);padding:0 1.5rem;height:60px;display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--brown);text-decoration:none;white-space:nowrap;}
+.nav-tabs{display:flex;gap:.4rem;background:rgba(92,50,32,.07);border-radius:100px;padding:.3rem;}
+.nav-tab{padding:.45rem 1.1rem;border-radius:100px;border:none;font-family:'Nunito',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;background:transparent;color:var(--muted);transition:all .2s;white-space:nowrap;}
+.nav-tab.active{background:var(--brown);color:var(--white);}
+.nav-home{background:transparent;border:1.5px solid rgba(92,50,32,.25);color:var(--brown);padding:.42rem 1rem;border-radius:100px;font-family:'Nunito',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;text-decoration:none;white-space:nowrap;transition:all .2s;}
+.nav-home:hover{background:var(--warm);}
+
+/* TABS CONTENT */
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+
+/* ═══ CATALOG TAB ═══ */
+.catalog-wrap{max-width:1100px;margin:0 auto;padding:2rem 1.5rem;}
+.catalog-header{text-align:center;margin-bottom:2rem;}
+.eyebrow{font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;}
+.sec-title{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:700;color:var(--brown);line-height:1.15;margin-bottom:.75rem;}
+.sec-title em{color:var(--rose-deep);font-style:italic;}
+.sec-sub{color:var(--muted);font-size:.9rem;line-height:1.65;max-width:480px;margin:0 auto;}
+
+/* CATEGORY FILTER */
+.cat-filters{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;margin-bottom:2rem;}
+.cat-btn{padding:.44rem 1.1rem;border-radius:100px;border:1.5px solid rgba(92,50,32,.18);background:var(--white);color:var(--muted);font-family:'Nunito',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .2s;}
+.cat-btn:hover{border-color:var(--rose);}
+.cat-btn.active{background:var(--brown);color:var(--white);border-color:var(--brown);}
+
+/* ADMIN BAR */
+.admin-bar{background:rgba(200,150,46,.1);border:1px solid rgba(200,150,46,.3);border-radius:14px;padding:.75rem 1.25rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;}
+.admin-bar-txt{font-size:.8rem;color:var(--brown);font-weight:600;flex:1;}
+.btn-upload-new{background:var(--gold);color:var(--white);border:none;padding:.45rem 1rem;border-radius:100px;font-family:'Nunito',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;transition:background .2s;}
+.btn-upload-new:hover{background:var(--gold-light);color:var(--brown);}
+
+/* CAKE GRID */
+.cakes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.25rem;}
+.cake-card{background:var(--white);border-radius:20px;overflow:hidden;border:1px solid rgba(92,50,32,.08);transition:transform .3s,box-shadow .3s;cursor:pointer;}
+.cake-card:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(92,50,32,.1);}
+.cake-img-box{height:200px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.cake-img-box img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
+.cake-img-box canvas{position:relative;z-index:1;}
+.cake-badge{position:absolute;top:.75rem;right:.75rem;z-index:2;font-size:.65rem;font-weight:700;padding:.22rem .6rem;border-radius:100px;background:var(--gold);color:var(--white);}
+.cake-cat-badge{position:absolute;top:.75rem;left:.75rem;z-index:2;font-size:.65rem;font-weight:700;padding:.22rem .6rem;border-radius:100px;color:var(--white);}
+.cake-body{padding:1rem;}
+.cake-name{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--brown);margin-bottom:.45rem;}
+.cake-meta{display:flex;gap:.6rem;flex-wrap:wrap;font-size:.72rem;color:var(--muted);margin-bottom:.75rem;}
+.cake-meta span{background:var(--cream);padding:.15rem .5rem;border-radius:100px;}
+.cake-footer{display:flex;align-items:center;justify-content:space-between;}
+.cake-price{font-size:1.2rem;font-weight:700;color:var(--brown);}
+.cake-price small{font-size:.72rem;font-weight:400;color:var(--muted);margin-left:.15rem;}
+.btn-order-sm{background:var(--rose-deep);color:var(--white);border:none;padding:.42rem 1rem;border-radius:100px;font-size:.78rem;font-family:'Nunito',sans-serif;font-weight:700;cursor:pointer;transition:background .2s;}
+.btn-order-sm:hover{background:var(--brown);}
+
+/* UPLOAD IMAGE OVERLAY */
+.img-upload-overlay{position:absolute;inset:0;background:rgba(0,0,0,.5);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;opacity:0;transition:opacity .2s;z-index:3;}
+.cake-img-box:hover .img-upload-overlay{opacity:1;}
+.img-upload-overlay span{color:var(--white);font-size:.78rem;font-weight:600;}
+
+/* PAGINATION */
+.pagination{display:flex;align-items:center;justify-content:center;gap:.5rem;margin-top:2rem;flex-wrap:wrap;}
+.pg-btn{width:36px;height:36px;border-radius:50%;border:1.5px solid rgba(92,50,32,.18);background:var(--white);color:var(--brown);font-family:'Nunito',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.pg-btn.active{background:var(--brown);color:var(--white);border-color:var(--brown);}
+.pg-btn:hover:not(.active){background:var(--warm);}
+.pg-btn:disabled{opacity:.35;cursor:default;}
+.pg-info{font-size:.78rem;color:var(--muted);padding:0 .5rem;}
+
+/* ═══ BUILDER TAB ═══ */
+.builder-wrap{display:grid;grid-template-columns:380px 1fr;min-height:calc(100vh - 60px);}
+@media(max-width:860px){.builder-wrap{grid-template-columns:1fr;}}
+
+/* CANVAS PANEL */
+.canvas-panel{background:var(--brown);position:sticky;top:60px;height:calc(100vh - 60px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;overflow:hidden;}
+.canvas-panel::before{content:'';position:absolute;inset:0;opacity:.04;background-image:repeating-linear-gradient(45deg,#E8C878 0,#E8C878 1px,transparent 0,transparent 50%);background-size:18px 18px;}
+.canvas-title{color:rgba(255,255,255,.65);font-size:.82rem;font-weight:600;margin-bottom:.75rem;z-index:1;text-align:center;}
+.canvas-3d{position:relative;z-index:1;}
+#cakeCanvas3D{display:block;cursor:grab;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);}
+#cakeCanvas3D:active{cursor:grabbing;}
+.rotate-hint{color:rgba(255,255,255,.4);font-size:.68rem;margin-top:.6rem;text-align:center;z-index:1;letter-spacing:.04em;}
+.price-live{z-index:1;margin-top:1.25rem;text-align:center;}
+.price-live-label{font-size:.68rem;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.12em;}
+.price-live-amt{font-family:'Playfair Display',serif;font-size:2.6rem;font-weight:700;color:var(--gold-light);line-height:1;}
+.price-rows{z-index:1;width:100%;max-width:260px;margin-top:.75rem;}
+.price-row{display:flex;justify-content:space-between;font-size:.7rem;color:rgba(255,255,255,.4);padding:.18rem 0;border-bottom:1px solid rgba(255,255,255,.05);}
+.price-row.on{color:rgba(255,255,255,.72);}
+.price-row span:last-child{color:var(--gold-light);}
+@media(max-width:860px){
+  .canvas-panel{position:relative;top:auto;height:auto;padding:1.5rem 1rem;}
+  #cakeCanvas3D{max-width:260px;}
+}
+
+/* BUILDER FORM */
+.builder-form{padding:1.5rem;overflow-y:auto;}
+.bsec{border-bottom:1px solid rgba(92,50,32,.1);padding:1.5rem 0;}
+.bsec:last-child{border-bottom:none;}
+.bsec-head{display:flex;align-items:center;gap:.65rem;margin-bottom:1rem;}
+.bsec-num{width:25px;height:25px;border-radius:50%;background:rgba(92,50,32,.1);color:var(--brown);font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s;}
+.bsec-num.done{background:var(--gold);color:var(--white);}
+.bsec-title{font-weight:700;color:var(--brown);font-size:.92rem;}
+.bsec-note{font-size:.72rem;color:var(--muted);margin-left:auto;}
+
+/* SIZE GRID */
+.sz-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;}
+@media(max-width:500px){.sz-grid{grid-template-columns:repeat(2,1fr);}}
+.sz-btn{border:1.5px solid rgba(92,50,32,.15);background:var(--white);border-radius:11px;padding:.7rem .4rem;cursor:pointer;text-align:center;font-family:'Nunito',sans-serif;transition:all .2s;}
+.sz-btn:hover{border-color:var(--rose);}
+.sz-btn.sel{border-color:var(--brown);background:rgba(92,50,32,.05);}
+.sz-name{font-size:.82rem;font-weight:700;color:var(--brown);}
+.sz-info{font-size:.68rem;color:var(--muted);}
+.sz-price{font-size:.7rem;color:var(--gold);font-weight:700;margin-top:.15rem;}
+
+/* LAYER COUNTER */
+.layer-row{display:flex;align-items:center;gap:1.25rem;}
+.cnt-btn{width:34px;height:34px;border-radius:50%;border:none;background:var(--warm);color:var(--brown);font-size:1.2rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;}
+.cnt-btn:hover{background:var(--rose-deep);color:var(--white);}
+.cnt-val{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--brown);min-width:26px;text-align:center;}
+
+/* OPTION GRIDS */
+.opt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:.5rem;}
+.opt-btn{border:1.5px solid rgba(92,50,32,.15);background:var(--white);border-radius:11px;padding:.6rem .45rem;cursor:pointer;text-align:center;font-family:'Nunito',sans-serif;transition:all .2s;}
+.opt-btn:hover{border-color:var(--rose);}
+.opt-btn.sel{border-color:var(--brown);background:rgba(92,50,32,.05);}
+.opt-icon{font-size:1.25rem;margin-bottom:.2rem;display:block;}
+.opt-label{font-size:.68rem;color:var(--muted);display:block;font-weight:600;line-height:1.3;}
+.opt-cost{font-size:.63rem;color:var(--gold);display:block;font-weight:700;margin-top:.08rem;}
+
+/* TOPPINGS */
+.top-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(85px,1fr));gap:.45rem;}
+.top-btn{border:1.5px solid rgba(92,50,32,.15);background:var(--white);border-radius:10px;padding:.45rem;cursor:pointer;text-align:center;font-family:'Nunito',sans-serif;transition:all .2s;}
+.top-btn:hover{border-color:var(--rose);}
+.top-btn.sel{border-color:var(--gold);background:rgba(200,150,46,.07);}
+.tops-tags{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.5rem;}
+.top-tag{background:rgba(200,150,46,.12);color:var(--gold);font-size:.68rem;font-weight:700;padding:.15rem .5rem;border-radius:100px;}
+
+/* DEL OPTS */
+.del-opts{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;}
+@media(max-width:400px){.del-opts{grid-template-columns:1fr;}}
+.del-opt{border:1.5px solid rgba(92,50,32,.15);border-radius:13px;padding:.9rem;cursor:pointer;text-align:center;transition:all .2s;}
+.del-opt:hover{border-color:var(--rose);}
+.del-opt.sel{border-color:var(--brown);background:rgba(92,50,32,.04);}
+.del-opt-icon{font-size:1.4rem;margin-bottom:.3rem;}
+.del-opt-name{font-weight:700;font-size:.85rem;color:var(--brown);}
+.del-opt-sub{font-size:.7rem;color:var(--muted);}
+
+/* INPUTS */
+input[type=text],input[type=date],textarea,select{width:100%;padding:.6rem .9rem;border:1.5px solid rgba(92,50,32,.2);border-radius:10px;font-family:'Nunito',sans-serif;font-size:.88rem;color:var(--text);background:var(--white);outline:none;transition:border-color .2s;}
+input:focus,textarea:focus,select:focus{border-color:var(--brown);}
+textarea{resize:vertical;min-height:60px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:.65rem;}
+@media(max-width:420px){.form-row{grid-template-columns:1fr;}}
+.f-label{font-size:.7rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.35rem;display:block;}
+.f-group{margin-bottom:.9rem;}
+.f-group:last-child{margin-bottom:0;}
+
+/* BUTTONS */
+.btn-primary{background:var(--brown);color:var(--white);border:none;padding:.82rem 1.6rem;border-radius:100px;font-size:.92rem;font-family:'Nunito',sans-serif;font-weight:700;cursor:pointer;transition:all .2s;width:100%;margin-top:.65rem;}
+.btn-primary:hover{background:var(--brown-light);transform:translateY(-1px);}
+.btn-back{background:transparent;color:var(--brown);border:1.5px solid rgba(92,50,32,.22);padding:.7rem 1.4rem;border-radius:100px;font-size:.85rem;font-family:'Nunito',sans-serif;font-weight:600;cursor:pointer;transition:all .2s;margin-top:.5rem;width:100%;}
+.btn-back:hover{background:var(--warm);}
+.btn-wa{background:var(--green);color:var(--white);border:none;padding:.88rem 1.6rem;border-radius:100px;font-size:.95rem;font-family:'Nunito',sans-serif;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;margin-top:.65rem;transition:all .2s;}
+.btn-wa:hover{background:#128C7E;transform:translateY(-1px);}
+.btn-copy{background:rgba(92,50,32,.08);color:var(--brown);border:1.5px solid rgba(92,50,32,.18);padding:.42rem .9rem;border-radius:100px;font-size:.75rem;font-family:'Nunito',sans-serif;font-weight:600;cursor:pointer;transition:all .2s;}
+.btn-copy:hover{background:var(--warm);}
+
+/* PHASES */
+.phase{display:none;}
+.phase.active{display:block;}
+
+/* SUMMARY BOX */
+.summ-box{background:var(--cream);border-radius:14px;padding:1.1rem;border:1px solid rgba(92,50,32,.08);}
+.summ-row{display:flex;justify-content:space-between;font-size:.83rem;padding:.3rem 0;border-bottom:1px solid rgba(92,50,32,.07);color:var(--muted);}
+.summ-row:last-child{border-bottom:none;font-weight:700;color:var(--brown);font-size:.92rem;}
+.summ-row span:last-child{color:var(--brown);font-weight:600;}
+
+/* ADVANCE BOX */
+.adv-box{background:rgba(200,150,46,.1);border:1px solid rgba(200,150,46,.3);border-radius:13px;padding:.9rem 1.1rem;margin:.9rem 0;}
+.adv-label{font-size:.72rem;color:var(--gold);font-weight:700;margin-bottom:.2rem;}
+.adv-amt{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--brown);}
+.adv-sub{font-size:.72rem;color:var(--muted);margin-top:.15rem;}
+
+/* UPI BOX */
+.upi-box{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);border-radius:15px;padding:1.25rem;text-align:center;margin-bottom:1.1rem;}
+.upi-id-text{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:600;color:#FFD700;letter-spacing:.04em;margin:.45rem 0;}
+.upi-note{font-size:.72rem;color:rgba(255,255,255,.5);margin-top:.6rem;}
+.upi-apps{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-top:.8rem;}
+.upi-app{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:9px;padding:.35rem .75rem;color:var(--white);font-size:.72rem;font-family:'Nunito',sans-serif;font-weight:600;cursor:pointer;transition:background .2s;}
+.upi-app:hover{background:rgba(255,255,255,.2);}
+.screenshot-note{background:rgba(37,211,102,.07);border:1px solid rgba(37,211,102,.25);border-radius:11px;padding:.8rem .9rem;margin-bottom:.9rem;font-size:.78rem;color:#1a7040;display:flex;gap:.55rem;align-items:flex-start;}
+
+/* NOTIF */
+.notif{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--brown);color:var(--white);padding:.9rem 1.3rem;border-radius:13px;font-size:.85rem;z-index:9999;transform:translateY(100px);opacity:0;transition:all .4s;max-width:280px;box-shadow:0 8px 28px rgba(0,0,0,.18);}
+.notif.show{transform:translateY(0);opacity:1;}
+
+/* MODAL */
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(26,10,4,.65);z-index:1000;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px);}
+.modal-ov.open{display:flex;}
+.modal{background:var(--white);border-radius:24px;max-width:520px;width:100%;max-height:90vh;overflow-y:auto;padding:1.75rem;}
+.modal-close{background:none;border:none;cursor:pointer;font-size:1.3rem;color:var(--muted);float:right;line-height:1;transition:color .2s;}
+.modal-close:hover{color:var(--brown);}
+.modal-title{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--brown);margin-bottom:.3rem;}
+.modal-sub{color:var(--muted);font-size:.85rem;margin-bottom:1.25rem;}
+.modal-img-box{background:var(--cream);border-radius:16px;padding:1rem;text-align:center;margin-bottom:1.1rem;position:relative;}
+.modal-img-box img{width:100%;max-height:240px;object-fit:cover;border-radius:12px;display:none;}
+.modal-img-box canvas{max-width:100%;display:block;margin:0 auto;}
+
+/* HIDDEN FILE INPUT */
+.file-inp{display:none;}
+
+/* RESPONSIVE NAV TABS */
+@media(max-width:480px){
+  .nav-tabs{display:none;}
+  .nav-tab-sel{display:block;}
+}
+
+/* IMAGE INDICATOR */
+.has-img-badge{position:absolute;bottom:.6rem;left:.6rem;z-index:3;background:rgba(0,0,0,.65);color:var(--white);font-size:.62rem;font-weight:700;padding:.2rem .5rem;border-radius:100px;display:flex;align-items:center;gap:.25rem;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">🎂 Sweet Layers</a>
+  <div class="nav-tabs">
+    <button class="nav-tab active" id="tabBtnCatalog" onclick="showTab('catalog')">🛍️ Catalog</button>
+    <button class="nav-tab" id="tabBtnBuilder" onclick="showTab('builder')">🎨 Build Yours</button>
+  </div>
+  <a href="index.html" class="nav-home">← Home</a>
+</nav>
+
+<!-- ════════════ CATALOG TAB ════════════ -->
+<div class="tab-content active" id="tabCatalog">
+  <div class="catalog-wrap">
+    <div class="catalog-header">
+      <p class="eyebrow">Pre-Designed Collection</p>
+      <h1 class="sec-title">Our Signature <em>Cakes</em></h1>
+      <p class="sec-sub">Handcrafted masterpieces — choose a design and personalize with your message and date.</p>
+    </div>
+
+    <!-- ADMIN IMAGE UPLOAD INFO -->
+    <div class="admin-bar">
+      <span class="admin-img-icon">📸</span>
+      <span class="admin-bar-txt">Hover over any cake card and click the camera icon to add a real photo.</span>
+    </div>
+
+    <!-- CATEGORY FILTERS -->
+    <div class="cat-filters" id="catFilters">
+      <button class="cat-btn active" data-cat="all" onclick="filterCat(this)">All Cakes</button>
+      <button class="cat-btn" data-cat="birthday" onclick="filterCat(this)">🎂 Birthday</button>
+      <button class="cat-btn" data-cat="wedding" onclick="filterCat(this)">💍 Wedding</button>
+      <button class="cat-btn" data-cat="toy" onclick="filterCat(this)">🧸 Toy Theme</button>
+      <button class="cat-btn" data-cat="celebration" onclick="filterCat(this)">🎉 Celebration</button>
+      <button class="cat-btn" data-cat="premium" onclick="filterCat(this)">✨ Premium</button>
+    </div>
+
+    <div class="cakes-grid" id="cakesGrid"></div>
+    <div class="pagination" id="pagination"></div>
+  </div>
+</div>
+
+<!-- ════════════ BUILDER TAB ════════════ -->
+<div class="tab-content" id="tabBuilder">
+  <div class="builder-wrap">
+
+    <!-- LEFT: 3D CANVAS -->
+    <div class="canvas-panel">
+      <p class="canvas-title">Your Cake · Drag to rotate 360°</p>
+      <div class="canvas-3d">
+        <canvas id="cakeCanvas3D" width="280" height="300"></canvas>
+      </div>
+      <p class="rotate-hint">↔ Drag left/right to rotate</p>
+      <div class="price-live">
+        <div class="price-live-label">Estimated Total</div>
+        <div class="price-live-amt" id="livePrice">₹ 0</div>
+      </div>
+      <div class="price-rows" id="priceRows">
+        <div class="price-row" id="pr-size"><span>Base Cake</span><span>–</span></div>
+        <div class="price-row" id="pr-layers"><span>Extra Layers</span><span>–</span></div>
+        <div class="price-row" id="pr-flavor"><span>Flavor</span><span>–</span></div>
+        <div class="price-row" id="pr-frost"><span>Frosting</span><span>–</span></div>
+        <div class="price-row" id="pr-tops"><span>Toppings</span><span>–</span></div>
+        <div class="price-row" id="pr-del"><span>Delivery</span><span>–</span></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: BUILDER FORM -->
+    <div class="builder-form">
+
+      <!-- PHASE 1: BUILD -->
+      <div class="phase active" id="phase1">
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.75rem;color:var(--brown);margin-bottom:.25rem">Build Your Cake</h2>
+        <p style="color:var(--muted);font-size:.85rem;margin-bottom:1.5rem">Configure step by step — watch your cake update live in 3D.</p>
+
+        <!-- SIZE -->
+        <div class="bsec">
+          <div class="bsec-head"><div class="bsec-num" id="n1">1</div><div class="bsec-title">Cake Size & Weight</div></div>
+          <div class="sz-grid">
+            <button class="sz-btn" data-sz="Small" data-w="0.5" data-p="350" onclick="setSize(this)"><div class="sz-name">Small</div><div class="sz-info">0.5 kg · 6″</div><div class="sz-price">₹350</div></button>
+            <button class="sz-btn" data-sz="Medium" data-w="1" data-p="550" onclick="setSize(this)"><div class="sz-name">Medium</div><div class="sz-info">1 kg · 8″</div><div class="sz-price">₹550</div></button>
+            <button class="sz-btn" data-sz="Large" data-w="1.5" data-p="750" onclick="setSize(this)"><div class="sz-name">Large</div><div class="sz-info">1.5 kg · 10″</div><div class="sz-price">₹750</div></button>
+            <button class="sz-btn" data-sz="X-Large" data-w="2" data-p="950" onclick="setSize(this)"><div class="sz-name">X-Large</div><div class="sz-info">2 kg · 12″</div><div class="sz-price">₹950</div></button>
+            <button class="sz-btn" data-sz="2X-Large" data-w="3" data-p="1350" onclick="setSize(this)"><div class="sz-name">2X-Large</div><div class="sz-info">3 kg · 14″</div><div class="sz-price">₹1350</div></button>
+            <button class="sz-btn" data-sz="Party" data-w="5" data-p="2100" onclick="setSize(this)"><div class="sz-name">Party</div><div class="sz-info">5 kg · 18″</div><div class="sz-price">₹2100</div></button>
+          </div>
+        </div>
+
+        <!-- LAYERS -->
+        <div class="bsec">
+          <div class="bsec-head"><div class="bsec-num" id="n2">2</div><div class="bsec-title">Number of Layers</div><div class="bsec-note">+₹120 / extra layer</div></div>
+          <div class="layer-row">
+            <button class="cnt-btn" onclick="chgLayer(-1)">−</button>
+            <div><div class="cnt-val" id="layerVal">2</div><div style="font-size:.72rem;color:var(--muted)">layers</div></div>
+            <button class="cnt-btn" onclick="chgLayer(1)">+</button>
+            <div style="font-size:.75rem;color:var(--muted);margin-left:.5rem">Each layer shrinks<br>smaller toward top ↑</div>
+          </div>
+        </div>
+
+        <!-- FLAVOR -->
+        <div class="bsec">
+          <div class="bsec-head"><div class="bsec-num" id="n3">3</div><div class="bsec-title">Cake Flavor</div></div>
+          <div class="opt-grid" id="flavorGrid">
+            <button class="opt-btn" data-n="Vanilla" data-c="#FFF3C4" data-p="0" onclick="setFlavor(this)"><span class="opt-icon">🍦</span><span class="opt-label">Vanilla</span><span class="opt-cost">Base</span></button>
+            <button class="opt-btn" data-n="Chocolate" data-c="#3A1F0D" data-p="80" onclick="setFlavor(this)"><span class="opt-icon">🍫</span><span class="opt-label">Chocolate</span><span class="opt-cost">+₹80</span></button>
+            <button class="opt-btn" data-n="Red Velvet" data-c="#A02020" data-p="100" onclick="setFlavor(this)"><span class="opt-icon">❤️</span><span class="opt-label">Red Velvet</span><span class="opt-cost">+₹100</span></button>
+            <button class="opt-btn" data-n="Lemon" data-c="#F9E16A" data-p="60" onclick="setFlavor(this)"><span class="opt-icon">🍋</span><span class="opt-label">Lemon</span><span class="opt-cost">+₹60</span></button>
+            <button class="opt-btn" data-n="Matcha" data-c="#7DB87A" data-p="130" onclick="setFlavor(this)"><span class="opt-icon">🍵</span><span class="opt-label">Matcha</span><span class="opt-cost">+₹130</span></button>
+            <button class="opt-btn" data-n="Strawberry" data-c="#E84393" data-p="90" onclick="setFlavor(this)"><span class="opt-icon">🍓</span><span class="opt-label">Strawberry</span><span class="opt-cost">+₹90</span></button>
+            <button class="opt-btn" data-n="Blueberry" data-c="#5B3FA8" data-p="90" onclick="setFlavor(this)"><span class="opt-icon">🫐</span><span class="opt-label">Blueberry</span><span class="opt-cost">+₹90</span></button>
+            <button class="opt-btn" data-n="Caramel" data-c="#C8962E" data-p="80" onclick="setFlavor(this)"><span class="opt-icon">🍯</span><span class="opt-label">Caramel</span><span class="opt-cost">+₹80</span></button>
+          </div>
+        </div>
+
+        <!-- FROSTING -->
+        <div class="bsec">
+          <div class="bsec-head"><div class="bsec-num" id="n4">4</div><div class="bsec-title">Frosting</div></div>
+          <div class="opt-grid" id="frostGrid">
+            <button class="opt-btn" data-n="Buttercream" data-c="#FFFAF5" data-p="0" onclick="setFrost(this)"><span class="opt-icon">🤍</span><span class="opt-label">Buttercream</span><span class="opt-cost">Base</span></button>
+            <button class="opt-btn" data-n="Choco Ganache" data-c="#8B4513" data-p="100" onclick="setFrost(this)"><span class="opt-icon">🍫</span><span class="opt-label">Choco Ganache</span><span class="opt-cost">+₹100</span></button>
+            <button class="opt-btn" data-n="Rose Pink" data-c="#F4B8C1" data-p="80" onclick="setFrost(this)"><span class="opt-icon">🌸</span><span class="opt-label">Rose Pink</span><span class="opt-cost">+₹80</span></button>
+            <button class="opt-btn" data-n="Matcha Cream" data-c="#9DC88D" data-p="120" onclick="setFrost(this)"><span class="opt-icon">🍵</span><span class="opt-label">Matcha Cream</span><span class="opt-cost">+₹120</span></button>
+            <button class="opt-btn" data-n="Caramel" data-c="#D4901A" data-p="90" onclick="setFrost(this)"><span class="opt-icon">🍯</span><span class="opt-label">Caramel</span><span class="opt-cost">+₹90</span></button>
+            <button class="opt-btn" data-n="Sky Blue" data-c="#8EC4E8" data-p="80" onclick="setFrost(this)"><span class="opt-icon">💙</span><span class="opt-label">Sky Blue</span><span class="opt-cost">+₹80</span></button>
+          </div>
+        </div>
+
+        <!-- TOPPINGS -->
+        <div class="bsec">
+          <div class="bsec-head"><div class="bsec-num" id="n5">5</div><div class="bsec-title">Toppings</div><div class="bsec-note">Multi-select</div></div>
+          <div class="top-grid">
+            <button class="top-btn" data-n="Strawberries" data-p="80" onclick="toggleTop(this)"><div style="font-size:1.2rem">🍓</div><div style="font-size:.66rem;color:var(--muted);font-weight:600">Strawberries</div><div style="font-size:.6rem;color:var(--gold);font-weight:700">+₹80</div></button>
+            <button class="top-btn" data-n="Fresh Flowers" data-p="150" onclick="toggleTop(this)"><div style="font-size:1.2rem">🌸</div><div style="font-size:.66rem;color:var(--muted);font-weight:600">Flowers</div><div style="font-size:.6rem;color:var(--gold);font-weight:700">+₹150</div></button>
+            <button class="top-btn" data-n="Gold Flakes" data-p="200" onclick="toggleTop(this)"><div style="font-size:1.2rem">✨</div><div style="font-size:.66rem;color:var(--muted);font-weight:600">Gold Flakes</div><div style="font-size:.6rem;color:var(--gold);font-weight:700">+₹200</div></button>
+            <button class="top-btn" data-n="Macarons" data-p="180" onclick="toggleTop(this)"><div style="font-size:1.2rem">🍬</div><div style="font-size:.66rem;color:var(--muted);font-weight:600">Macarons</div><div style="font-size:.6rem;color:var(--gold);font-weight:700">+₹180</div></button>
+            <button class="top-btn" data-n="Sprinkles" data-p="50" onclick="toggleTop(this)"><div style="font-size:1.2rem">🎉</div><div style="font-size:.66rem;color:var(--muted);font-weight:600">Sprinkles</div><div style="font-size:.6rem;color:var(--gold);font-weight:700">+₹50</div></button>
+            <button class="top-btn" data-n="Chocolate Drip" data-p="120" onclick="toggleTop(this)"><div style="font-size:1.2rem">🍫</div><div style="font-size:.66rem;color:var(--muted);font-weight:600">Choco Drip</div><div style="font-size:.6rem;color:var(--gold);font-weight:700">+₹120</div></button>
+            <button class="top-btn" data-n="Candles" data-p="60" onclick="toggleTop(this)"><div style="font-size:1.2rem">🕯️</div><div style="font-size:.66rem;color:var(--muted);font-weight:600">Candles</div><div style="font-size:.6rem;color:var(--gold);font-weight:700">+₹60</div></button>
+            <button class="top-btn" data-n="Fondant Figures" data-p="250" onclick="toggleTop(this)"><div style="font-size:1.2rem">🎨</div><div style="font-size:.66rem;color:var(--muted);font-weight:600">Fondant Art</div><div style="font-size:.6rem;color:var(--gold);font-weight:700">+₹250</div></button>
+          </div>
+          <div class="tops-tags" id="topsTags"></div>
+        </div>
+
+        <!-- MESSAGE -->
+        <div class="bsec">
+          <div class="bsec-head"><div class="bsec-num" id="n6">6</div><div class="bsec-title">Message on Cake</div><div class="bsec-note">Free · max 28 chars</div></div>
+          <input type="text" id="cakeMsg" maxlength="28" placeholder='e.g. Happy Birthday Priya! 🎉' oninput="setMsg(this.value)" />
+        </div>
+
+        <!-- DELIVERY -->
+        <div class="bsec">
+          <div class="bsec-head"><div class="bsec-num" id="n7">7</div><div class="bsec-title">Pickup or Delivery</div></div>
+          <div class="del-opts">
+            <div class="del-opt sel" id="do-pickup" onclick="setDel('pickup')"><div class="del-opt-icon">🏪</div><div class="del-opt-name">Pickup</div><div class="del-opt-sub">From bakery · Free</div></div>
+            <div class="del-opt" id="do-delivery" onclick="setDel('delivery')"><div class="del-opt-icon">🛵</div><div class="del-opt-name">Delivery</div><div class="del-opt-sub">Within 15 km · +₹80</div></div>
+          </div>
+          <div id="addr-wrap" style="display:none;margin-top:.7rem">
+            <input type="text" id="delAddr" placeholder="Full delivery address with landmark..." />
+          </div>
+        </div>
+
+        <!-- CUSTOMER -->
+        <div class="bsec">
+          <div class="bsec-head"><div class="bsec-num" id="n8">8</div><div class="bsec-title">Your Details</div></div>
+          <div class="f-group"><label class="f-label">Full Name *</label><input type="text" id="custName" placeholder="Your name" /></div>
+          <div class="f-group"><label class="f-label">WhatsApp Number *</label><input type="text" id="custPhone" placeholder="+91 98765 43210" /></div>
+          <div class="form-row">
+            <div class="f-group" style="margin-bottom:0"><label class="f-label">Date *</label><input type="text" id="pickDate" placeholder="DD/MM/YYYY" /></div>
+            <div class="f-group" style="margin-bottom:0"><label class="f-label">Time *</label>
+              <select id="pickTime">
+                <option>09:00 AM</option><option>10:00 AM</option><option>11:00 AM</option><option>12:00 PM</option>
+                <option>01:00 PM</option><option>02:00 PM</option><option>03:00 PM</option><option>04:00 PM</option>
+                <option>05:00 PM</option><option>06:00 PM</option><option>07:00 PM</option><option>08:00 PM</option>
+              </select>
+            </div>
+          </div>
+          <div class="f-group" style="margin-top:.9rem;margin-bottom:0"><label class="f-label">Special Instructions</label><textarea id="specNote" placeholder="Allergies, special requests..."></textarea></div>
+        </div>
+
+        <button class="btn-primary" onclick="goReview()">Review & Pay →</button>
+      </div>
+
+      <!-- PHASE 2: REVIEW + PAY -->
+      <div class="phase" id="phase2">
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.75rem;color:var(--brown);margin-bottom:.25rem">Review & Pay</h2>
+        <p style="color:var(--muted);font-size:.85rem;margin-bottom:1.5rem">Complete 25% advance via UPI and confirm your order.</p>
+
+        <div class="bsec">
+          <div class="bsec-head"><div class="bsec-title" style="font-size:1rem">📋 Order Summary</div></div>
+          <div class="summ-box" id="summBox"></div>
+        </div>
+
+        <div class="bsec">
+          <div class="adv-box"><div class="adv-label">25% Advance Payment Required</div><div class="adv-amt" id="advAmt">₹0</div><div class="adv-sub">Balance paid at pickup / delivery</div></div>
+          <div class="upi-box">
+            <div style="font-size:.65rem;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.25rem">Pay to UPI ID</div>
+            <div class="upi-id-text">jaypeerao@okicici</div>
+            <button class="btn-copy" onclick="copyUPI()" style="background:rgba(255,255,255,.1);color:var(--white);border-color:rgba(255,255,255,.2)">Copy UPI ID</button>
+            <div class="upi-apps">
+              <button class="upi-app" onclick="openUPI('gpay')">📱 GPay</button>
+              <button class="upi-app" onclick="openUPI('phonepe')">📲 PhonePe</button>
+              <button class="upi-app" onclick="openUPI('paytm')">💳 Paytm</button>
+              <button class="upi-app" onclick="openUPI('bhim')">🏦 BHIM</button>
+            </div>
+            <div class="upi-note">Pay ₹<span id="upiAmt">0</span> · Amount auto-filled in supported apps</div>
+          </div>
+          <div class="screenshot-note"><span>📸</span><div>After payment, take a <strong>screenshot of the payment confirmation</strong> and attach it to the WhatsApp message below.</div></div>
+          <div class="f-group"><label class="f-label">UTR / Reference Number (after payment)</label><input type="text" id="utrRef" placeholder="e.g. 123456789012 (recommended)" /></div>
+          <button class="btn-wa" onclick="sendWA()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Send Receipt to Bakery on WhatsApp
+          </button>
+          <button class="btn-back" onclick="backBuild()">← Edit Cake</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CATALOG ORDER MODAL -->
+<div class="modal-ov" id="catalogModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-img-box">
+      <img id="modalImg" src="" alt="" />
+      <canvas id="modalCanvas" width="260" height="240"></canvas>
+    </div>
+    <h2 class="modal-title" id="modalName">–</h2>
+    <p class="modal-sub" id="modalDesc">–</p>
+    <div class="summ-box" id="modalDetails" style="margin-bottom:1rem"></div>
+    <div class="adv-box"><div class="adv-label">25% Advance to Book</div><div class="adv-amt" id="modalAdv">₹0</div><div class="adv-sub">Balance paid at pickup / delivery</div></div>
+    <div class="f-group"><label class="f-label">Your Name *</label><input type="text" id="catName" placeholder="Full name" /></div>
+    <div class="f-group"><label class="f-label">WhatsApp Number *</label><input type="text" id="catPhone" placeholder="+91 98765 43210" /></div>
+    <div class="f-group"><label class="f-label">Message on Cake (optional)</label><input type="text" id="catMsg" maxlength="30" placeholder='e.g. Happy Birthday!' /></div>
+    <div class="form-row">
+      <div class="f-group" style="margin-bottom:0"><label class="f-label">Date *</label><input type="text" id="catDate" placeholder="DD/MM/YYYY" /></div>
+      <div class="f-group" style="margin-bottom:0"><label class="f-label">Time *</label>
+        <select id="catTime"><option>09:00 AM</option><option>10:00 AM</option><option>11:00 AM</option><option>12:00 PM</option><option>02:00 PM</option><option>04:00 PM</option><option>06:00 PM</option><option>08:00 PM</option></select>
+      </div>
+    </div>
+    <div class="adv-box" style="margin-top:.9rem">
+      <div class="adv-label">Pay Advance to: jaypeerao@okicici</div>
+      <button class="btn-copy" onclick="copyUPI()" style="margin-top:.3rem">Copy UPI ID</button>
+    </div>
+    <div class="screenshot-note" style="margin-top:.75rem"><span>📸</span><div>After paying advance, attach your <strong>payment screenshot</strong> to the WhatsApp message.</div></div>
+    <button class="btn-wa" style="margin-top:.75rem" onclick="sendCatalogWA()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Send Receipt to Bakery on WhatsApp
+    </button>
+  </div>
+</div>
+
+<!-- HIDDEN FILE INPUTS -->
+<input type="file" accept="image/*" id="globalFileInp" class="file-inp" onchange="handleImgUpload(event)" />
+
+<div class="notif" id="notif"></div>
+
+<script>
+// ═══ CONSTANTS ═══════════════════════════════════
+const UPI_ID='jaypeerao@okicici';
+const BAKERY='919642710123';
+
+// ═══ CATALOG DATA ════════════════════════════════
+const catColors={birthday:'#E84393',wedding:'#C8962E',toy:'#45B7D1',celebration:'#7DB87A',premium:'#9B59B6'};
+const CAKES=[
+  {id:1,name:'Classic Victoria Sponge',cat:'birthday',badge:'Bestseller',weight:'1 kg',type:'Sponge',flavor:'Vanilla & Strawberry',layers:2,cost:750,desc:'Light, airy sponge with fresh strawberry jam and whipped cream',fC:'#FFF3C4',frC:'#FFFAF5',tops:['Strawberries','Sprinkles'],img:null},
+  {id:2,name:'Dark Chocolate Decadence',cat:'premium',badge:'Premium',weight:'1.5 kg',type:'Mousse',flavor:'Dark Chocolate',layers:3,cost:1350,desc:'Triple-layered dark chocolate cake with rich ganache frosting',fC:'#3A1F0D',frC:'#8B4513',tops:['Gold Flakes','Chocolate Drip'],img:null},
+  {id:3,name:'Red Velvet Romance',cat:'celebration',badge:'Popular',weight:'1 kg',type:'Velvet',flavor:'Red Velvet',layers:2,cost:950,desc:'Classic red velvet with cream cheese frosting and fresh flowers',fC:'#A02020',frC:'#FFFAF5',tops:['Fresh Flowers'],img:null},
+  {id:4,name:'Lemon Sunshine',cat:'birthday',badge:'Light',weight:'0.5 kg',type:'Chiffon',flavor:'Lemon Zest',layers:1,cost:580,desc:'Tangy lemon chiffon with buttercream swirls and sprinkles',fC:'#F9E16A',frC:'#FFFAF5',tops:['Sprinkles'],img:null},
+  {id:5,name:'Matcha Zen Garden',cat:'premium',badge:'Artisan',weight:'1 kg',type:'Sponge',flavor:'Japanese Matcha',layers:2,cost:1100,desc:'Premium matcha sponge with white chocolate and gold details',fC:'#7DB87A',frC:'#9DC88D',tops:['Macarons','Gold Flakes'],img:null},
+  {id:6,name:'Strawberry Fields',cat:'birthday',badge:'Seasonal',weight:'1 kg',type:'Chiffon',flavor:'Strawberry',layers:2,cost:850,desc:'Fresh strawberry chiffon with rose pink frosting and flowers',fC:'#E84393',frC:'#F4B8C1',tops:['Strawberries','Fresh Flowers'],img:null},
+  {id:7,name:'Royal Wedding Elegance',cat:'wedding',badge:'Wedding',weight:'5 kg',type:'Fondant',flavor:'Vanilla & Almond',layers:5,cost:6500,desc:'Elegant multi-tier fondant wedding cake with pearl details',fC:'#FFF3C4',frC:'#FFFAF5',tops:['Fresh Flowers','Gold Flakes','Fondant Figures'],img:null},
+  {id:8,name:'Caramel Praline Dream',cat:'celebration',badge:'Indulgent',weight:'1.5 kg',type:'Mousse',flavor:'Caramel & Praline',layers:3,cost:1280,desc:'Salted caramel mousse with praline crunch and gold flakes',fC:'#C8962E',frC:'#D4901A',tops:['Gold Flakes','Macarons'],img:null},
+  {id:9,name:'Unicorn Rainbow Cake',cat:'toy',badge:'Kids Fave',weight:'1.5 kg',type:'Sponge',flavor:'Vanilla Rainbow',layers:3,cost:1100,desc:'Colourful rainbow layers with unicorn fondant decoration',fC:'#E0A0FF',frC:'#FFD6E8',tops:['Sprinkles','Fondant Figures','Candles'],img:null},
+  {id:10,name:'Dinosaur Adventure',cat:'toy',badge:'Roar!',weight:'1 kg',type:'Sponge',flavor:'Chocolate',layers:2,cost:950,desc:'Chocolate cake with fondant dinosaur toppers — kids will love it!',fC:'#3A1F0D',frC:'#9DC88D',tops:['Fondant Figures','Chocolate Drip','Candles'],img:null},
+  {id:11,name:'Superhero Blast',cat:'toy',badge:'Pow!',weight:'1.5 kg',type:'Velvet',flavor:'Red Velvet',layers:3,cost:1150,desc:'Red velvet with bold superhero themed fondant decorations',fC:'#A02020',frC:'#8EC4E8',tops:['Fondant Figures','Sprinkles'],img:null},
+  {id:12,name:'Princess Castle Cake',cat:'toy',badge:'Magical',weight:'2 kg',type:'Chiffon',flavor:'Strawberry',layers:4,cost:1500,desc:'Dreamy pink castle cake with fondant turrets and edible glitter',fC:'#E84393',frC:'#F4B8C1',tops:['Fondant Figures','Gold Flakes','Sprinkles'],img:null},
+  {id:13,name:'Berry Medley Bliss',cat:'celebration',badge:'Fresh',weight:'1 kg',type:'Sponge',flavor:'Mixed Berry',layers:2,cost:920,desc:'Mixed berry compote between vanilla sponge with rose frosting',fC:'#7B3F8C',frC:'#F4B8C1',tops:['Strawberries','Fresh Flowers'],img:null},
+  {id:14,name:'Floral Fantasy',cat:'wedding',badge:'Romantic',weight:'2 kg',type:'Fondant',flavor:'Rose & Lychee',layers:3,cost:2800,desc:'Pastel fondant with hand-crafted sugar flowers and gold leaf',fC:'#F4B8C1',frC:'#FFFAF5',tops:['Fresh Flowers','Gold Flakes'],img:null},
+  {id:15,name:'Blueberry Cheesecake',cat:'celebration',badge:'New',weight:'1 kg',type:'Cheesecake',flavor:'Blueberry',layers:2,cost:980,desc:'NY-style cheesecake with fresh blueberry compote topping',fC:'#5B3FA8',frC:'#FFFAF5',tops:['Fresh Flowers'],img:null},
+  {id:16,name:'Triple Chocolate Bomb',cat:'premium',badge:'Indulgent',weight:'2 kg',type:'Mousse',flavor:'Triple Chocolate',layers:3,cost:1850,desc:'White, milk, and dark chocolate layers with chocolate drip',fC:'#1A0A04',frC:'#8B4513',tops:['Chocolate Drip','Gold Flakes'],img:null},
+  {id:17,name:'Anniversary Gold Cake',cat:'celebration',badge:'Special',weight:'2 kg',type:'Fondant',flavor:'Vanilla & Caramel',layers:3,cost:2200,desc:'Luxurious gold-accented fondant cake for milestone anniversaries',fC:'#C8962E',frC:'#FFFAF5',tops:['Gold Flakes','Fresh Flowers','Macarons'],img:null},
+  {id:18,name:'Tropical Mango Delight',cat:'birthday',badge:'Summer',weight:'1 kg',type:'Chiffon',flavor:'Mango',layers:2,cost:880,desc:'Light mango chiffon with mango cream and tropical decorations',fC:'#FFA500',frC:'#FFE066',tops:['Gold Flakes','Sprinkles'],img:null},
+  {id:19,name:'Space Explorer Cake',cat:'toy',badge:'Blast Off!',weight:'1.5 kg',type:'Velvet',flavor:'Blueberry',layers:3,cost:1200,desc:'Galaxy-themed cake with fondant rockets and planets',fC:'#1A1A4E',frC:'#8EC4E8',tops:['Fondant Figures','Gold Flakes','Sprinkles'],img:null},
+  {id:20,name:'Elegant Naked Cake',cat:'wedding',badge:'Rustic',weight:'3 kg',type:'Sponge',flavor:'Vanilla & Rose',layers:4,cost:3500,desc:'Semi-naked cake with dried flowers and cascading greenery',fC:'#FFF3C4',frC:'#FFFAF5',tops:['Fresh Flowers','Gold Flakes'],img:null},
+];
+
+// ═══ CAKE DRAW ENGINE ════════════════════════════
+function shade(hex,p){
+  hex=hex.replace('#','');
+  if(hex.length===3)hex=hex.split('').map(c=>c+c).join('');
+  const r=parseInt(hex.slice(0,2),16),g=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);
+  const t=p<0?0:255,a=Math.abs(p);
+  return'#'+[r,g,b].map(v=>Math.max(0,Math.min(255,Math.round(v+(t-v)*a))).toString(16).padStart(2,'0')).join('');
+}
+function drawCake(canvas,opts){
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const layers=Math.max(1,Math.min(5,opts.layers||2));
+  const fC=opts.flavorColor||'#FFF3C4',frC=opts.frostColor||'#FFFAF5';
+  const maxW=W*.7,minW=maxW*.5;
+  const lH=Math.min(42,(H*.58)/layers);
+  const totalH=layers*lH,baseY=H*.84;
+  // shadow
+  ctx.beginPath();ctx.ellipse(W/2,baseY+8,maxW/2+10,9,0,0,Math.PI*2);
+  ctx.fillStyle='rgba(0,0,0,.1)';ctx.fill();
+  // plate
+  const pg=ctx.createRadialGradient(W/2-10,baseY-3,2,W/2,baseY,maxW/2+16);
+  pg.addColorStop(0,'#FEFCF8');pg.addColorStop(1,'#E0D0C0');
+  ctx.beginPath();ctx.ellipse(W/2,baseY,maxW/2+16,11,0,0,Math.PI*2);
+  ctx.fillStyle=pg;ctx.fill();ctx.strokeStyle='#C8B0A0';ctx.lineWidth=1;ctx.stroke();
+  // layers (bottom = widest, top = narrowest)
+  for(let i=layers-1;i>=0;i--){
+    const t=layers===1?0:(layers-1-i)/(layers-1);
+    const lW=maxW-(maxW-minW)*t;
+    const lX=(W-lW)/2,lY=baseY-totalH+i*lH,lEl=lW*.18/2;
+    // bottom ellipse for depth
+    ctx.beginPath();ctx.ellipse(W/2,lY+lH-1,lW/2,lEl,0,0,Math.PI*2);
+    ctx.fillStyle=shade(fC,-.22);ctx.fill();
+    // side
+    const sg=ctx.createLinearGradient(lX,0,lX+lW,0);
+    sg.addColorStop(0,shade(fC,-.18));sg.addColorStop(.5,fC);sg.addColorStop(1,shade(fC,-.12));
+    ctx.beginPath();ctx.rect(lX,lY,lW,lH-2);ctx.fillStyle=sg;ctx.fill();
+    // frosting band
+    const fb=Math.min(10,lH*.28);
+    ctx.beginPath();ctx.rect(lX,lY,lW,fb);ctx.fillStyle=frC;ctx.fill();
+    // wavy drip below band
+    ctx.beginPath();ctx.moveTo(lX,lY+fb);
+    const wc=Math.max(3,Math.floor(lW/15));
+    for(let w=0;w<=wc;w++){ctx.lineTo(lX+w*(lW/wc),lY+fb+(w%2===0?7:3));}
+    ctx.lineTo(lX+lW,lY+fb);ctx.closePath();ctx.fillStyle=frC;ctx.fill();
+    // top ellipse
+    const tg=ctx.createRadialGradient(W/2,lY,0,W/2,lY,lW/2);
+    tg.addColorStop(0,frC);tg.addColorStop(1,shade(frC,-.1));
+    ctx.beginPath();ctx.ellipse(W/2,lY,lW/2,lEl,0,0,Math.PI*2);
+    ctx.fillStyle=tg;ctx.fill();ctx.strokeStyle=shade(frC,-.12);ctx.lineWidth=.5;ctx.stroke();
+  }
+  const topY=baseY-totalH,topW=minW,topX=(W-topW)/2;
+  // drip blobs on top
+  for(let d=0;d<6;d++){
+    const dx=topX+topW*(.07+d*.16),dl=5+Math.sin(d*1.8)*4;
+    ctx.beginPath();ctx.moveTo(dx-2.5,topY);
+    ctx.bezierCurveTo(dx-4,topY+dl*.4,dx+4,topY+dl*.7,dx,topY+dl);
+    ctx.bezierCurveTo(dx-3,topY+dl*.7,dx+3,topY+dl*.4,dx+2.5,topY);
+    ctx.closePath();ctx.fillStyle=frC;ctx.fill();
+  }
+  // toppings
+  const tops=opts.toppings||[];
+  if(tops.includes('Strawberries')){
+    [[W/2-topW*.2,topY-4],[W/2+topW*.18,topY-3],[W/2,topY-7]].forEach(([sx,sy])=>{
+      const g=ctx.createRadialGradient(sx-1,sy-3,1,sx,sy,8);
+      g.addColorStop(0,'#FF5555');g.addColorStop(1,'#990000');
+      ctx.beginPath();ctx.moveTo(sx,sy-9);ctx.bezierCurveTo(sx+8,sy-11,sx+9,sy-1,sx,sy+5);ctx.bezierCurveTo(sx-9,sy-1,sx-8,sy-11,sx,sy-9);ctx.fillStyle=g;ctx.fill();
+      [[-1,-5],[3,-2],[-3,-2],[1,1],[-2,1]].forEach(([ox,oy])=>{ctx.beginPath();ctx.ellipse(sx+ox,sy+oy,.9,1.4,.3,0,Math.PI*2);ctx.fillStyle='rgba(255,240,100,.7)';ctx.fill();});
+      ctx.fillStyle='#2D7A2D';[[-3,-10],[0,-12],[3,-10]].forEach(([ox,oy])=>{ctx.beginPath();ctx.ellipse(sx+ox,sy+oy,1.8,3.2,ox*.08,0,Math.PI*2);ctx.fill();});
+    });
+  }
+  if(tops.includes('Fresh Flowers')){
+    [[W/2+topW*.14,topY-5],[W/2-topW*.16,topY-4]].forEach(([fx,fy])=>{
+      ['#FFB7C5','#FF8FAB','#FFC0CB','#FF6B9D','#FFD6E0'].forEach((pc,pi)=>{
+        const pa=(pi/5)*Math.PI*2;ctx.beginPath();ctx.ellipse(fx+Math.cos(pa)*5.5,fy+Math.sin(pa)*5.5,4,6,pa,0,Math.PI*2);ctx.fillStyle=pc;ctx.fill();
+      });
+      const cg=ctx.createRadialGradient(fx,fy,0,fx,fy,4);cg.addColorStop(0,'#FFEF44');cg.addColorStop(1,'#FFB800');
+      ctx.beginPath();ctx.arc(fx,fy,4,0,Math.PI*2);ctx.fillStyle=cg;ctx.fill();
+    });
+  }
+  if(tops.includes('Candles')){
+    const cc=['#F4B8C1','#FFE066','#8EC4E8'];
+    [-topW*.22,0,topW*.22].forEach((cx2,ci)=>{
+      const canX=W/2+cx2,canY=topY-22;
+      ctx.beginPath();ctx.rect(canX-3,canY,6,18);ctx.fillStyle=cc[ci];ctx.fill();
+      ctx.beginPath();ctx.moveTo(canX,canY);ctx.bezierCurveTo(canX+4,canY-5,canX+5,canY-11,canX,canY-15);ctx.bezierCurveTo(canX-5,canY-11,canX-4,canY-5,canX,canY);ctx.fillStyle='#FFB347';ctx.fill();
+      ctx.beginPath();ctx.moveTo(canX,canY-2);ctx.bezierCurveTo(canX+2,canY-6,canX+2,canY-10,canX,canY-12);ctx.bezierCurveTo(canX-2,canY-10,canX-2,canY-6,canX,canY-2);ctx.fillStyle='#FFEF99';ctx.fill();
+    });
+  }
+  if(tops.includes('Gold Flakes')){
+    const rng=s=>{let x=Math.sin(s*7.3+2)*1e4;return x-Math.floor(x);};
+    for(let g=0;g<14;g++){
+      const gx=topX+4+(rng(g)*.9)*(topW-8),gy=topY-(rng(g*3)*12),gs=1.5+rng(g*7)*2.5;
+      ctx.save();ctx.translate(gx,gy);ctx.rotate(rng(g*11)*Math.PI);
+      ctx.globalAlpha=.55+rng(g*5)*.45;
+      ctx.fillStyle=`hsl(${42+rng(g*9)*10},85%,${52+rng(g*17)*12}%)`;
+      ctx.beginPath();ctx.moveTo(0,-gs);ctx.lineTo(gs*.5,0);ctx.lineTo(0,gs);ctx.lineTo(-gs*.5,0);ctx.closePath();ctx.fill();ctx.restore();
+    }
+    ctx.globalAlpha=1;
+  }
+  if(tops.includes('Macarons')){
+    [[W/2-topW*.22,topY-6],[W/2+topW*.2,topY-5]].forEach(([mx,my],mi)=>{
+      const mp=[['#F4B8C1','#E890A0','#FFE4E8'],['#C8E6C9','#90C695','#E8F5E9']];
+      const[tc,bc,cr]=mp[mi%2];
+      const mtg=ctx.createRadialGradient(mx-2,my-6,1,mx,my-4,9);mtg.addColorStop(0,cr);mtg.addColorStop(1,tc);
+      ctx.beginPath();ctx.ellipse(mx,my-5,9,5.5,0,0,Math.PI*2);ctx.fillStyle=mtg;ctx.fill();
+      ctx.beginPath();ctx.rect(mx-9,my-5,18,5);ctx.fillStyle='#FFFAF5';ctx.fill();
+      const mbg=ctx.createRadialGradient(mx-2,my+1,1,mx,my,9);mbg.addColorStop(0,cr);mbg.addColorStop(1,bc);
+      ctx.beginPath();ctx.ellipse(mx,my,9,5.5,0,0,Math.PI*2);ctx.fillStyle=mbg;ctx.fill();
+    });
+  }
+  if(tops.includes('Sprinkles')){
+    const sc=['#FF6B6B','#FFE66D','#4ECDC4','#45B7D1','#96CEB4','#FF99CC'];
+    const rng=s=>{let x=Math.sin(s+1)*1e4;return x-Math.floor(x);};
+    for(let s=0;s<22;s++){
+      const sx=topX+5+(rng(s*3)*.88)*(topW-10),sy=topY-(rng(s*7)*14)+2;
+      ctx.save();ctx.translate(sx,sy);ctx.rotate(rng(s*11)*Math.PI);
+      ctx.beginPath();ctx.rect(-4,-1.5,8,3);ctx.fillStyle=sc[s%6];ctx.fill();ctx.restore();
+    }
+  }
+  if(tops.includes('Chocolate Drip')){
+    const rng=s=>{let x=Math.sin(s*4.1+3)*1e4;return x-Math.floor(x);};
+    for(let d=0;d<6;d++){
+      const drx=topX+topW*(.08+d*.16),dlen=14+rng(d)*20;
+      ctx.beginPath();ctx.moveTo(drx-3.5,topY+2);ctx.bezierCurveTo(drx-5,topY+dlen*.4,drx+5,topY+dlen*.7,drx,topY+dlen);ctx.bezierCurveTo(drx-4,topY+dlen*.7,drx+4,topY+dlen*.4,drx+3.5,topY+2);ctx.closePath();ctx.fillStyle='#3E1800';ctx.fill();
+    }
+  }
+  if(tops.includes('Fondant Figures')){
+    const hx=W/2,hy=topY-14;
+    const hg=ctx.createRadialGradient(hx-2,hy-2,1,hx,hy,12);hg.addColorStop(0,'#FF9EC7');hg.addColorStop(1,'#CC2266');
+    ctx.beginPath();ctx.moveTo(hx,hy+9);ctx.bezierCurveTo(hx-14,hy-2,hx-14,hy-12,hx,hy-5);ctx.bezierCurveTo(hx+14,hy-12,hx+14,hy-2,hx,hy+9);ctx.fillStyle=hg;ctx.fill();
+  }
+  if(opts.message){
+    ctx.save();ctx.font=`bold ${Math.max(6,Math.min(9,topW/(opts.message.length+2)))}px 'Nunito',sans-serif`;
+    ctx.fillStyle=shade(frC,-.55);ctx.textAlign='center';ctx.textBaseline='middle';ctx.shadowColor='rgba(0,0,0,.1)';ctx.shadowBlur=2;
+    ctx.fillText(opts.message.slice(0,20),W/2,topY);ctx.restore();
+  }
+}
+
+// ═══ CATALOG RENDERING ═══════════════════════════
+let currentCat='all',currentPage=1;
+const PER_PAGE=10;
+
+function filterCat(btn){
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  currentCat=btn.dataset.cat;
+  currentPage=1;
+  renderCatalog();
+}
+
+function getFiltered(){
+  return currentCat==='all'?CAKES:CAKES.filter(c=>c.cat===currentCat);
+}
+
+function renderCatalog(){
+  const filtered=getFiltered();
+  const total=filtered.length;
+  const pages=Math.ceil(total/PER_PAGE);
+  const start=(currentPage-1)*PER_PAGE;
+  const slice=filtered.slice(start,start+PER_PAGE);
+
+  const grid=document.getElementById('cakesGrid');
+  grid.innerHTML=slice.map(cake=>`
+    <div class="cake-card" onclick="openCake(${cake.id})">
+      <div class="cake-img-box" style="background:linear-gradient(135deg,${cake.fC}44,${cake.frC}66)">
+        ${cake.img?`<img src="${cake.img}" alt="${cake.name}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />`:''}
+        <canvas id="cc${cake.id}" width="170" height="180" style="${cake.img?'opacity:0;':''}"></canvas>
+        <span class="cake-badge">${cake.badge}</span>
+        <span class="cake-cat-badge" style="background:${catColors[cake.cat]||'#888'}">${{birthday:'🎂',wedding:'💍',toy:'🧸',celebration:'🎉',premium:'✨'}[cake.cat]||''} ${cake.cat}</span>
+        <div class="img-upload-overlay" onclick="event.stopPropagation();triggerImgUpload(${cake.id})">
+          <span style="font-size:1.5rem">📸</span>
+          <span>${cake.img?'Change Photo':'Add Photo'}</span>
+        </div>
+        ${cake.img?`<div class="has-img-badge">📷 Photo</div>`:''}
+      </div>
+      <div class="cake-body">
+        <div class="cake-name">${cake.name}</div>
+        <div class="cake-meta">
+          <span>⚖️ ${cake.weight}</span>
+          <span>🍰 ${cake.layers} layer${cake.layers>1?'s':''}</span>
+          <span>🍦 ${cake.flavor}</span>
+          <span>🎂 ${cake.type}</span>
+        </div>
+        <div class="cake-footer">
+          <div class="cake-price">₹${cake.cost.toLocaleString()} <small>/ whole</small></div>
+          <button class="btn-order-sm" onclick="event.stopPropagation();openCake(${cake.id})">Order</button>
+        </div>
+      </div>
+    </div>`).join('');
+
+  // draw canvases
+  requestAnimationFrame(()=>{
+    slice.forEach(cake=>{
+      const c=document.getElementById('cc'+cake.id);
+      if(c&&!cake.img) drawCake(c,{layers:cake.layers,flavorColor:cake.fC,frostColor:cake.frC,toppings:cake.tops});
+    });
+  });
+
+  // Pagination
+  const pg=document.getElementById('pagination');
+  if(pages<=1){pg.innerHTML='';return;}
+  let html=`<button class="pg-btn" onclick="goPg(${currentPage-1})" ${currentPage===1?'disabled':''}>‹</button>`;
+  for(let i=1;i<=pages;i++) html+=`<button class="pg-btn ${i===currentPage?'active':''}" onclick="goPg(${i})">${i}</button>`;
+  html+=`<button class="pg-btn" onclick="goPg(${currentPage+1})" ${currentPage===pages?'disabled':''}>›</button>`;
+  html+=`<span class="pg-info">Showing ${start+1}–${Math.min(start+PER_PAGE,total)} of ${total}</span>`;
+  pg.innerHTML=html;
+}
+
+function goPg(p){
+  const pages=Math.ceil(getFiltered().length/PER_PAGE);
+  if(p<1||p>pages)return;
+  currentPage=p;
+  renderCatalog();
+  document.getElementById('tabCatalog').scrollTo({top:0,behavior:'smooth'});
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+renderCatalog();
+
+// ═══ IMAGE UPLOAD ════════════════════════════════
+let uploadTargetId=null;
+function triggerImgUpload(id){uploadTargetId=id;document.getElementById('globalFileInp').click();}
+function handleImgUpload(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const cake=CAKES.find(c=>c.id===uploadTargetId);
+    if(cake){cake.img=ev.target.result;renderCatalog();showNotif('Photo added! ✅');}
+  };
+  reader.readAsDataURL(file);
+  e.target.value='';
+}
+
+// ═══ CATALOG MODAL ═══════════════════════════════
+let activeCatalogCake=null;
+function openCake(id){
+  activeCatalogCake=CAKES.find(c=>c.id===id);
+  const c=activeCatalogCake;
+  document.getElementById('modalName').textContent=c.name;
+  document.getElementById('modalDesc').textContent=c.desc;
+  document.getElementById('modalAdv').textContent='₹'+Math.ceil(c.cost*.25).toLocaleString();
+  const mi=document.getElementById('modalImg');
+  const mc=document.getElementById('modalCanvas');
+  if(c.img){mi.src=c.img;mi.style.display='block';mc.style.display='none';}
+  else{mi.style.display='none';mc.style.display='block';drawCake(mc,{layers:c.layers,flavorColor:c.fC,frostColor:c.frC,toppings:c.tops});}
+  document.getElementById('modalDetails').innerHTML=`
+    <div class="summ-row"><span>Weight</span><span>${c.weight}</span></div>
+    <div class="summ-row"><span>Type</span><span>${c.type}</span></div>
+    <div class="summ-row"><span>Flavor</span><span>${c.flavor}</span></div>
+    <div class="summ-row"><span>Layers</span><span>${c.layers}</span></div>
+    <div class="summ-row"><span>Toppings</span><span>${c.tops.join(', ')}</span></div>
+    <div class="summ-row"><span>Total</span><span>₹${c.cost.toLocaleString()}</span></div>`;
+  document.getElementById('catalogModal').classList.add('open');
+}
+function closeModal(){document.getElementById('catalogModal').classList.remove('open');}
+document.getElementById('catalogModal').addEventListener('click',e=>{if(e.target===document.getElementById('catalogModal'))closeModal();});
+
+function sendCatalogWA(){
+  if(!activeCatalogCake)return;
+  const c=activeCatalogCake;
+  const name=document.getElementById('catName').value.trim();
+  const phone=document.getElementById('catPhone').value.trim();
+  const msg=document.getElementById('catMsg').value.trim();
+  const date=document.getElementById('catDate').value.trim();
+  const time=document.getElementById('catTime').value;
+  if(!name||!phone||!date){showNotif('Please fill name, phone & date');return;}
+  const adv=Math.ceil(c.cost*.25),bal=c.cost-adv;
+  const orderNum='SL'+Date.now().toString().slice(-6);
+  const receipt=`🎂 *SWEET LAYERS BAKERY*
+━━━━━━━━━━━━━━━━━━━━━━
+🆔 *Order #${orderNum}*
+📅 ${new Date().toLocaleDateString('en-IN')}
+━━━━━━━━━━━━━━━━━━━━━━
+👤 *CUSTOMER*
+• Name: ${name}
+• Phone: ${phone}
+━━━━━━━━━━━━━━━━━━━━━━
+🎂 *CAKE ORDERED*
+• ${c.name}
+• Category: ${c.cat}
+• Weight: ${c.weight}
+• Type: ${c.type}
+• Flavor: ${c.flavor}
+• Layers: ${c.layers}
+• Toppings: ${c.tops.join(', ')}
+• Message: "${msg||'None'}"
+━━━━━━━━━━━━━━━━━━━━━━
+📅 *PICKUP*
+• Date: ${date}
+• Time: ${time}
+• Location: 123 Baker Street, Nellore
+━━━━━━━━━━━━━━━━━━━━━━
+💰 *PAYMENT*
+• Total: ₹${c.cost.toLocaleString()}
+• Advance (25%): ₹${adv.toLocaleString()}
+• Balance on pickup: ₹${bal.toLocaleString()}
+• UPI ID: ${UPI_ID}
+━━━━━━━━━━━━━━━━━━━━━━
+📸 *Please attach your payment screenshot to confirm the order.*
+━━━━━━━━━━━━━━━━━━━━━━
+Thank you! We'll confirm within 30 mins 🎉`;
+  window.open(`https://wa.me/${BAKERY}?text=${encodeURIComponent(receipt)}`,'_blank');
+  showNotif('Receipt sent to bakery! ✅');
+  closeModal();
+}
+
+// ═══ TAB SWITCHING ════════════════════════════════
+function showTab(tab){
+  document.getElementById('tabCatalog').classList.toggle('active',tab==='catalog');
+  document.getElementById('tabBuilder').classList.toggle('active',tab==='builder');
+  document.getElementById('tabBtnCatalog').classList.toggle('active',tab==='catalog');
+  document.getElementById('tabBtnBuilder').classList.toggle('active',tab==='builder');
+  if(tab==='builder') drawCake3D();
+}
+
+// ═══ 3D BUILDER ══════════════════════════════════
+const S={size:'',weight:0,basePrice:0,layers:2,layerPrice:120,flavor:'',flavorColor:'#FFF3C4',flavorPrice:0,frost:'',frostColor:'#FFFAF5',frostPrice:0,tops:[],topsPrice:0,msg:'',delivery:'pickup'};
+function totalPrice(){return S.basePrice+S.layerPrice+S.flavorPrice+S.frostPrice+S.topsPrice+(S.delivery==='delivery'?80:0);}
+
+// 3D rotation
+let rotA=0,isDrag=false,dragX=0,lastA=0;
+const cv3=document.getElementById('cakeCanvas3D');
+cv3.addEventListener('mousedown',e=>{isDrag=true;dragX=e.clientX;lastA=rotA;cv3.style.cursor='grabbing';});
+cv3.addEventListener('touchstart',e=>{isDrag=true;dragX=e.touches[0].clientX;lastA=rotA;},{passive:true});
+window.addEventListener('mousemove',e=>{if(!isDrag)return;rotA=lastA+(e.clientX-dragX)*.013;drawCake3D();});
+window.addEventListener('touchmove',e=>{if(!isDrag)return;rotA=lastA+(e.touches[0].clientX-dragX)*.013;drawCake3D();},{passive:true});
+window.addEventListener('mouseup',()=>{isDrag=false;cv3.style.cursor='grab';});
+window.addEventListener('touchend',()=>{isDrag=false;});
+setInterval(()=>{if(!isDrag){rotA+=.008;drawCake3D();}},30);
+
+function drawCake3D(){
+  const ctx=cv3.getContext('2d');
+  const W=cv3.width,H=cv3.height;
+  ctx.clearRect(0,0,W,H);
+  const layers=Math.max(1,Math.min(5,S.layers));
+  const fC=S.flavorColor,frC=S.frostColor;
+  const maxW=W*.68,minW=maxW*.5;
+  const lH=Math.min(42,(H*.58)/layers);
+  const totalH=layers*lH,baseY=H*.84;
+  // shadow
+  ctx.beginPath();ctx.ellipse(W/2,baseY+8,maxW/2+10,9,0,0,Math.PI*2);ctx.fillStyle='rgba(0,0,0,.12)';ctx.fill();
+  // plate
+  const pg=ctx.createRadialGradient(W/2-10,baseY-3,2,W/2,baseY,maxW/2+16);
+  pg.addColorStop(0,'#FEFCF8');pg.addColorStop(1,'#E0D0C0');
+  ctx.beginPath();ctx.ellipse(W/2,baseY,maxW/2+16,11,0,0,Math.PI*2);ctx.fillStyle=pg;ctx.fill();ctx.strokeStyle='#C8B0A0';ctx.lineWidth=1;ctx.stroke();
+  // layers — bottom widest, top narrowest
+  for(let i=layers-1;i>=0;i--){
+    const t=layers===1?0:(layers-1-i)/(layers-1);
+    const lW=maxW-(maxW-minW)*t;
+    const lX=(W-lW)/2,lY=baseY-totalH+i*lH,lEl=lW*.18/2;
+    ctx.beginPath();ctx.ellipse(W/2,lY+lH-1,lW/2,lEl,0,0,Math.PI*2);ctx.fillStyle=shade(fC,-.22);ctx.fill();
+    const leftS=Math.cos(rotA)*.2;
+    const sg=ctx.createLinearGradient(lX,0,lX+lW,0);
+    sg.addColorStop(0,shade(fC,-Math.max(0,leftS+.15)));
+    sg.addColorStop(.5,fC);
+    sg.addColorStop(1,shade(fC,-Math.max(0,-leftS+.15)));
+    ctx.beginPath();ctx.rect(lX,lY,lW,lH-2);ctx.fillStyle=sg;ctx.fill();
+    const fb=Math.min(10,lH*.28);
+    ctx.beginPath();ctx.rect(lX,lY,lW,fb);ctx.fillStyle=frC;ctx.fill();
+    ctx.beginPath();ctx.moveTo(lX,lY+fb);
+    const wc=Math.max(3,Math.floor(lW/15));
+    for(let w=0;w<=wc;w++){ctx.lineTo(lX+w*(lW/wc),lY+fb+(w%2===0?7:3));}
+    ctx.lineTo(lX+lW,lY+fb);ctx.closePath();ctx.fillStyle=frC;ctx.fill();
+    const tg=ctx.createRadialGradient(W/2,lY,0,W/2,lY,lW/2);tg.addColorStop(0,frC);tg.addColorStop(1,shade(frC,-.1));
+    ctx.beginPath();ctx.ellipse(W/2,lY,lW/2,lEl,0,0,Math.PI*2);ctx.fillStyle=tg;ctx.fill();ctx.strokeStyle=shade(frC,-.12);ctx.lineWidth=.5;ctx.stroke();
+  }
+  const topY=baseY-totalH,topW=minW,topX=(W-topW)/2;
+  for(let d=0;d<6;d++){const dx=topX+topW*(.07+d*.16),dl=5+Math.sin(d*1.8+rotA)*.4*4;ctx.beginPath();ctx.moveTo(dx-2.5,topY);ctx.bezierCurveTo(dx-4,topY+dl*.4,dx+4,topY+dl*.7,dx,topY+dl);ctx.bezierCurveTo(dx-3,topY+dl*.7,dx+3,topY+dl*.4,dx+2.5,topY);ctx.closePath();ctx.fillStyle=frC;ctx.fill();}
+  // toppings (same engine as above but 3D-aware)
+  drawToppings3D(ctx,S.tops,W,H,topX,topY,topW,frC,rotA);
+  if(S.msg){
+    ctx.save();ctx.font=`bold ${Math.max(6,Math.min(9,topW/(S.msg.length+2)))}px 'Nunito',sans-serif`;
+    ctx.fillStyle=shade(frC,-.55);ctx.textAlign='center';ctx.textBaseline='middle';ctx.shadowColor='rgba(0,0,0,.1)';ctx.shadowBlur=2;
+    ctx.fillText(S.msg.slice(0,20),W/2,topY);ctx.restore();
+  }
+}
+function drawToppings3D(ctx,tops,W,H,topX,topY,topW,frC,angle){
+  const cx=W/2;
+  if(tops.includes('Strawberries')){
+    [[cx-topW*.2,topY-4],[cx+topW*.18,topY-3],[cx,topY-7]].forEach(([sx,sy])=>{
+      const g=ctx.createRadialGradient(sx-1,sy-3,1,sx,sy,8);g.addColorStop(0,'#FF5555');g.addColorStop(1,'#990000');
+      ctx.beginPath();ctx.moveTo(sx,sy-9);ctx.bezierCurveTo(sx+8,sy-11,sx+9,sy-1,sx,sy+5);ctx.bezierCurveTo(sx-9,sy-1,sx-8,sy-11,sx,sy-9);ctx.fillStyle=g;ctx.fill();
+      [[-1,-5],[3,-2],[-3,-2],[1,1],[-2,1]].forEach(([ox,oy])=>{ctx.beginPath();ctx.ellipse(sx+ox,sy+oy,.9,1.4,.3,0,Math.PI*2);ctx.fillStyle='rgba(255,240,100,.7)';ctx.fill();});
+      ctx.fillStyle='#2D7A2D';[[-3,-10],[0,-12],[3,-10]].forEach(([ox,oy])=>{ctx.beginPath();ctx.ellipse(sx+ox,sy+oy,1.8,3.2,ox*.08,0,Math.PI*2);ctx.fill();});
+    });
+  }
+  if(tops.includes('Fresh Flowers')){
+    [[cx+topW*.14,topY-5],[cx-topW*.16,topY-4]].forEach(([fx,fy])=>{
+      ['#FFB7C5','#FF8FAB','#FFC0CB','#FF6B9D','#FFD6E0'].forEach((pc,pi)=>{
+        const pa=(pi/5)*Math.PI*2+angle*.1;ctx.beginPath();ctx.ellipse(fx+Math.cos(pa)*5.5,fy+Math.sin(pa)*5.5,4,6,pa,0,Math.PI*2);ctx.fillStyle=pc;ctx.fill();
+      });
+      const cg=ctx.createRadialGradient(fx,fy,0,fx,fy,4);cg.addColorStop(0,'#FFEF44');cg.addColorStop(1,'#FFB800');
+      ctx.beginPath();ctx.arc(fx,fy,4,0,Math.PI*2);ctx.fillStyle=cg;ctx.fill();
+    });
+  }
+  if(tops.includes('Candles')){
+    const cc=['#F4B8C1','#FFE066','#8EC4E8'];
+    [-topW*.22,0,topW*.22].forEach((cx2,ci)=>{
+      const canX=cx+cx2,canY=topY-24;
+      ctx.beginPath();ctx.rect(canX-3,canY,6,18);ctx.fillStyle=cc[ci];ctx.fill();
+      ctx.beginPath();ctx.moveTo(canX,canY);ctx.bezierCurveTo(canX+4,canY-5,canX+5,canY-11,canX,canY-15);ctx.bezierCurveTo(canX-5,canY-11,canX-4,canY-5,canX,canY);ctx.fillStyle='#FFB347';ctx.fill();
+      ctx.beginPath();ctx.moveTo(canX,canY-2);ctx.bezierCurveTo(canX+2,canY-6,canX+2,canY-10,canX,canY-12);ctx.bezierCurveTo(canX-2,canY-10,canX-2,canY-6,canX,canY-2);ctx.fillStyle='#FFEF99';ctx.fill();
+    });
+  }
+  if(tops.includes('Gold Flakes')){
+    const rng=s=>{let x=Math.sin(s*7.3+2)*1e4;return x-Math.floor(x);};
+    for(let g=0;g<14;g++){
+      const gx=topX+4+(rng(g)*.9)*(topW-8),gy=topY-(rng(g*3)*12),gs=1.5+rng(g*7)*2.5;
+      ctx.save();ctx.translate(gx,gy);ctx.rotate(rng(g*11)*Math.PI+angle*.05);ctx.globalAlpha=.55+rng(g*5)*.45;
+      ctx.fillStyle=`hsl(${42+rng(g*9)*10},85%,${52+rng(g*17)*12}%)`;
+      ctx.beginPath();ctx.moveTo(0,-gs);ctx.lineTo(gs*.5,0);ctx.lineTo(0,gs);ctx.lineTo(-gs*.5,0);ctx.closePath();ctx.fill();ctx.restore();
+    }
+    ctx.globalAlpha=1;
+  }
+  if(tops.includes('Macarons')){
+    [[cx-topW*.22,topY-6],[cx+topW*.2,topY-5]].forEach(([mx,my],mi)=>{
+      const mp=[['#F4B8C1','#E890A0','#FFE4E8'],['#C8E6C9','#90C695','#E8F5E9']];
+      const[tc,bc,cr]=mp[mi%2];
+      const mtg=ctx.createRadialGradient(mx-2,my-6,1,mx,my-4,9);mtg.addColorStop(0,cr);mtg.addColorStop(1,tc);
+      ctx.beginPath();ctx.ellipse(mx,my-5,9,5.5,0,0,Math.PI*2);ctx.fillStyle=mtg;ctx.fill();
+      ctx.beginPath();ctx.rect(mx-9,my-5,18,5);ctx.fillStyle='#FFFAF5';ctx.fill();
+      const mbg=ctx.createRadialGradient(mx-2,my+1,1,mx,my,9);mbg.addColorStop(0,cr);mbg.addColorStop(1,bc);
+      ctx.beginPath();ctx.ellipse(mx,my,9,5.5,0,0,Math.PI*2);ctx.fillStyle=mbg;ctx.fill();
+    });
+  }
+  if(tops.includes('Sprinkles')){
+    const sc=['#FF6B6B','#FFE66D','#4ECDC4','#45B7D1','#96CEB4','#FF99CC'];
+    const rng=s=>{let x=Math.sin(s+1)*1e4;return x-Math.floor(x);};
+    for(let s=0;s<22;s++){
+      const sx=topX+5+(rng(s*3)*.88)*(topW-10),sy=topY-(rng(s*7)*14)+2;
+      ctx.save();ctx.translate(sx,sy);ctx.rotate(rng(s*11)*Math.PI+angle*.02);
+      ctx.beginPath();ctx.rect(-4,-1.5,8,3);ctx.fillStyle=sc[s%6];ctx.fill();ctx.restore();
+    }
+  }
+  if(tops.includes('Chocolate Drip')){
+    const rng=s=>{let x=Math.sin(s*4.1+3)*1e4;return x-Math.floor(x);};
+    for(let d=0;d<6;d++){
+      const drx=topX+topW*(.08+d*.16),dlen=14+rng(d)*20;
+      ctx.beginPath();ctx.moveTo(drx-3.5,topY+2);ctx.bezierCurveTo(drx-5,topY+dlen*.4,drx+5,topY+dlen*.7,drx,topY+dlen);ctx.bezierCurveTo(drx-4,topY+dlen*.7,drx+4,topY+dlen*.4,drx+3.5,topY+2);ctx.closePath();ctx.fillStyle='#3E1800';ctx.fill();
+    }
+  }
+  if(tops.includes('Fondant Figures')){
+    const hx=cx,hy=topY-14;
+    const hg=ctx.createRadialGradient(hx-2,hy-2,1,hx,hy,12);hg.addColorStop(0,'#FF9EC7');hg.addColorStop(1,'#CC2266');
+    ctx.beginPath();ctx.moveTo(hx,hy+9);ctx.bezierCurveTo(hx-14,hy-2,hx-14,hy-12,hx,hy-5);ctx.bezierCurveTo(hx+14,hy-12,hx+14,hy-2,hx,hy+9);ctx.fillStyle=hg;ctx.fill();
+  }
+}
+
+function setSize(btn){document.querySelectorAll('.sz-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');S.size=btn.dataset.sz;S.weight=parseFloat(btn.dataset.w);S.basePrice=parseInt(btn.dataset.p);done('n1');updPB();drawCake3D();}
+function chgLayer(d){S.layers=Math.max(1,Math.min(5,S.layers+d));document.getElementById('layerVal').textContent=S.layers;S.layerPrice=(S.layers-1)*120;done('n2');updPB();drawCake3D();}
+function setFlavor(btn){document.getElementById('flavorGrid').querySelectorAll('.opt-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');S.flavor=btn.dataset.n;S.flavorColor=btn.dataset.c;S.flavorPrice=parseInt(btn.dataset.p);done('n3');updPB();drawCake3D();}
+function setFrost(btn){document.getElementById('frostGrid').querySelectorAll('.opt-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');S.frost=btn.dataset.n;S.frostColor=btn.dataset.c;S.frostPrice=parseInt(btn.dataset.p);done('n4');updPB();drawCake3D();}
+function toggleTop(btn){const n=btn.dataset.n,p=parseInt(btn.dataset.p);if(btn.classList.contains('sel')){btn.classList.remove('sel');S.tops=S.tops.filter(t=>t!==n);S.topsPrice-=p;}else{btn.classList.add('sel');S.tops.push(n);S.topsPrice+=p;}done('n5');updPB();drawCake3D();document.getElementById('topsTags').innerHTML=S.tops.map(t=>`<span class="top-tag">${t}</span>`).join('');}
+function setMsg(v){S.msg=v;done('n6');drawCake3D();}
+function setDel(t){S.delivery=t;document.getElementById('do-pickup').classList.toggle('sel',t==='pickup');document.getElementById('do-delivery').classList.toggle('sel',t==='delivery');document.getElementById('addr-wrap').style.display=t==='delivery'?'block':'none';done('n7');updPB();drawCake3D();}
+function done(id){document.getElementById(id).classList.add('done');}
+function updPB(){
+  const t=totalPrice();
+  document.getElementById('livePrice').textContent='₹ '+t.toLocaleString();
+  const set=(id,val,active)=>{const el=document.getElementById(id);el.classList.toggle('on',active);el.children[1].textContent=val;};
+  set('pr-size',S.basePrice?'₹'+S.basePrice:'–',!!S.basePrice);
+  set('pr-layers',S.layerPrice?'₹'+S.layerPrice:'–',!!S.layerPrice);
+  set('pr-flavor',S.flavorPrice?'+₹'+S.flavorPrice:'Incl.',!!S.flavorPrice);
+  set('pr-frost',S.frostPrice?'+₹'+S.frostPrice:'Incl.',!!S.frostPrice);
+  set('pr-tops',S.topsPrice?'+₹'+S.topsPrice:'–',!!S.topsPrice);
+  set('pr-del',S.delivery==='delivery'?'+₹80':'Free',S.delivery==='delivery');
+}
+
+function goReview(){
+  if(!S.size){showNotif('Choose a cake size 🎂');return;}
+  if(!S.flavor){showNotif('Choose a flavor 🍦');return;}
+  if(!S.frost){showNotif('Choose a frosting 🎨');return;}
+  const name=document.getElementById('custName').value.trim();
+  const phone=document.getElementById('custPhone').value.trim();
+  const date=document.getElementById('pickDate').value.trim();
+  if(!name||!phone||!date){showNotif('Fill your name, phone & date ✍️');return;}
+  const total=totalPrice(),adv=Math.ceil(total*.25),bal=total-adv;
+  const addr=document.getElementById('delAddr').value;
+  const note=document.getElementById('specNote').value;
+  document.getElementById('summBox').innerHTML=`
+    <div class="summ-row"><span>Customer</span><span>${name}</span></div>
+    <div class="summ-row"><span>Phone</span><span>${phone}</span></div>
+    <div class="summ-row"><span>Cake Size</span><span>${S.size} (${S.weight} kg)</span></div>
+    <div class="summ-row"><span>Layers</span><span>${S.layers}</span></div>
+    <div class="summ-row"><span>Flavor</span><span>${S.flavor}</span></div>
+    <div class="summ-row"><span>Frosting</span><span>${S.frost}</span></div>
+    <div class="summ-row"><span>Toppings</span><span>${S.tops.length?S.tops.join(', '):'None'}</span></div>
+    <div class="summ-row"><span>Message</span><span>"${S.msg||'None'}"</span></div>
+    <div class="summ-row"><span>Delivery</span><span>${S.delivery==='delivery'?'Home (+₹80)':'Pickup'}</span></div>
+    ${addr?`<div class="summ-row"><span>Address</span><span>${addr}</span></div>`:''}
+    <div class="summ-row"><span>Date & Time</span><span>${date} · ${document.getElementById('pickTime').value}</span></div>
+    ${note?`<div class="summ-row"><span>Note</span><span>${note}</span></div>`:''}
+    <div class="summ-row"><span>Total</span><span>₹${total.toLocaleString()}</span></div>
+    <div class="summ-row"><span>Balance on pickup</span><span>₹${bal.toLocaleString()}</span></div>`;
+  document.getElementById('advAmt').textContent='₹'+adv.toLocaleString();
+  document.getElementById('upiAmt').textContent=adv.toLocaleString();
+  document.getElementById('phase1').classList.remove('active');
+  document.getElementById('phase2').classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function backBuild(){document.getElementById('phase2').classList.remove('active');document.getElementById('phase1').classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+
+function copyUPI(){
+  navigator.clipboard.writeText(UPI_ID).catch(()=>{const el=document.createElement('textarea');el.value=UPI_ID;document.body.appendChild(el);el.select();document.execCommand('copy');document.body.removeChild(el);});
+  showNotif('UPI ID copied! ✅');
+}
+function openUPI(app){
+  const adv=Math.ceil(totalPrice()*.25);
+  const name=document.getElementById('custName').value||'Sweet Layers Order';
+  window.location.href=`upi://pay?pa=${UPI_ID}&pn=Sweet+Layers+Bakery&am=${adv}&cu=INR&tn=${encodeURIComponent('Cake Order - '+name)}`;
+}
+
+function sendWA(){
+  const name=document.getElementById('custName').value.trim();
+  const phone=document.getElementById('custPhone').value.trim();
+  const date=document.getElementById('pickDate').value.trim();
+  const time=document.getElementById('pickTime').value;
+  const addr=document.getElementById('delAddr').value.trim();
+  const note=document.getElementById('specNote').value.trim();
+  const utr=document.getElementById('utrRef').value.trim();
+  if(!name||!phone){showNotif('Fill your details first');return;}
+  const total=totalPrice(),adv=Math.ceil(total*.25),bal=total-adv;
+  const orderNum='SL'+Date.now().toString().slice(-6);
+  const receipt=`🎂 *SWEET LAYERS BAKERY*
+━━━━━━━━━━━━━━━━━━━━━━
+🆔 *Order #${orderNum}*
+📅 ${new Date().toLocaleDateString('en-IN')}
+━━━━━━━━━━━━━━━━━━━━━━
+👤 *CUSTOMER*
+• Name: ${name}
+• Phone: ${phone}
+━━━━━━━━━━━━━━━━━━━━━━
+🎂 *CUSTOM CAKE*
+• Size: ${S.size} (${S.weight} kg)
+• Layers: ${S.layers}
+• Flavor: ${S.flavor}
+• Frosting: ${S.frost}
+• Toppings: ${S.tops.length?S.tops.join(', '):'None'}
+• Message: "${S.msg||'None'}"
+━━━━━━━━━━━━━━━━━━━━━━
+🚚 *DELIVERY*
+• Type: ${S.delivery==='delivery'?'🛵 Home Delivery':'🏪 Pickup'}
+${addr?'• Address: '+addr:'• Pickup: 123 Baker Street, Nellore'}
+• Date: ${date}
+• Time: ${time}
+${note?'• Note: '+note:''}
+━━━━━━━━━━━━━━━━━━━━━━
+💰 *PAYMENT*
+• Total: ₹${total.toLocaleString()}
+• Advance (25%): ₹${adv.toLocaleString()}
+• Balance on pickup: ₹${bal.toLocaleString()}
+• UPI ID: ${UPI_ID}
+${utr?'• UTR Ref: '+utr:''}
+━━━━━━━━━━━━━━━━━━━━━━
+📸 *Please attach your payment screenshot to confirm.*
+━━━━━━━━━━━━━━━━━━━━━━
+Thank you! We'll confirm within 30 mins 🎉`;
+  window.open(`https://wa.me/${BAKERY}?text=${encodeURIComponent(receipt)}`,'_blank');
+  showNotif('Receipt sent to bakery! ✅');
+}
+
+function showNotif(msg){
+  const el=document.getElementById('notif');el.textContent=msg;el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),3500);
+}
+drawCake3D();updPB();
+</script>
+</body>
+</html>
