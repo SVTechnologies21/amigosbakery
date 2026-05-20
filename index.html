@@ -4,200 +4,195 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sweet Layers Bakery — Artisan Cakes, Nellore</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --cream:#FDF8F2; --warm:#F2E8D8; --rose:#D4857A; --rose-deep:#B5584E;
-  --brown:#5C3220; --brown-mid:#7A4530; --brown-light:#A06448;
-  --gold:#C8962E; --gold-light:#E8C878; --text:#2A1208; --muted:#7A5848;
-  --white:#FFFFFF; --dark:#1A0A04;
+:root{
+  --cream:#FDF8F2;--warm:#F2E8D8;--rose:#D4857A;--rose-deep:#B5584E;
+  --brown:#5C3220;--brown-mid:#7A4530;--brown-light:#A06448;
+  --gold:#C8962E;--gold-light:#E8C878;--text:#2A1208;--muted:#7A5848;
+  --white:#fff;--dark:#1A0A04;--green:#25D366;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{font-family:'Outfit',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden;}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden;}
 
-/* ── NAV ── */
-nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 3rem;height:68px;display:flex;align-items:center;justify-content:space-between;transition:all .4s;}
-nav.scrolled{background:rgba(253,248,242,.96);backdrop-filter:blur(16px);box-shadow:0 1px 24px rgba(92,50,32,.1);}
-.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:700;color:var(--white);text-decoration:none;letter-spacing:.02em;transition:color .3s;}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;transition:all .4s;padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;}
+nav.scrolled{background:rgba(253,248,242,.97);backdrop-filter:blur(16px);box-shadow:0 2px 20px rgba(92,50,32,.1);}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--white);text-decoration:none;transition:color .3s;white-space:nowrap;}
 nav.scrolled .nav-logo{color:var(--brown);}
-.nav-links{display:flex;gap:2rem;list-style:none;}
-.nav-links a{text-decoration:none;font-size:.88rem;font-weight:500;color:rgba(255,255,255,.85);transition:color .3s;}
+.nav-links{display:flex;gap:1.5rem;list-style:none;}
+.nav-links a{text-decoration:none;font-size:.85rem;font-weight:600;color:rgba(255,255,255,.85);transition:color .3s;}
 nav.scrolled .nav-links a{color:var(--muted);}
 .nav-links a:hover{color:var(--gold-light);}
 nav.scrolled .nav-links a:hover{color:var(--brown);}
-.nav-cta{background:var(--gold);color:var(--white);border:none;padding:.55rem 1.4rem;border-radius:100px;font-size:.85rem;font-family:'Outfit',sans-serif;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none;}
-.nav-cta:hover{background:var(--rose-deep);transform:translateY(-1px);}
+.nav-cta{background:var(--gold);color:var(--white);border:none;padding:.5rem 1.3rem;border-radius:100px;font-size:.83rem;font-family:'Nunito',sans-serif;font-weight:700;cursor:pointer;text-decoration:none;white-space:nowrap;transition:all .2s;}
+.nav-cta:hover{background:var(--rose-deep);}
+.nav-hamburger{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;padding:.4rem;}
+.nav-hamburger span{display:block;width:22px;height:2px;background:var(--white);border-radius:2px;transition:all .3s;}
+nav.scrolled .nav-hamburger span{background:var(--brown);}
+.nav-mobile{display:none;position:fixed;top:64px;left:0;right:0;background:rgba(253,248,242,.98);backdrop-filter:blur(16px);padding:1.5rem 2rem;flex-direction:column;gap:1rem;border-bottom:1px solid rgba(92,50,32,.1);z-index:199;}
+.nav-mobile.open{display:flex;}
+.nav-mobile a{text-decoration:none;font-size:1rem;font-weight:600;color:var(--brown);padding:.5rem 0;border-bottom:1px solid rgba(92,50,32,.08);}
 
-/* ── HERO ── */
-.hero{height:100vh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;}
-.hero-bg{position:absolute;inset:0;background:linear-gradient(160deg,#2A1208 0%,#5C3220 40%,#8B4E30 70%,#C8962E 100%);z-index:0;}
-.hero-pattern{position:absolute;inset:0;opacity:.06;background-image:repeating-linear-gradient(45deg,var(--gold) 0,var(--gold) 1px,transparent 0,transparent 50%);background-size:20px 20px;z-index:1;}
-.hero-content{position:relative;z-index:3;text-align:center;max-width:800px;padding:0 2rem;}
-.hero-eyebrow{display:inline-block;border:1px solid rgba(232,200,120,.4);color:var(--gold-light);font-size:.75rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;padding:.45rem 1.2rem;border-radius:100px;margin-bottom:2rem;animation:fadeUp .8s .1s both;}
-.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,7vw,5.5rem);font-weight:700;color:var(--white);line-height:1.08;margin-bottom:1.5rem;animation:fadeUp .8s .2s both;}
+/* HERO */
+.hero{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:80px 1.5rem 3rem;}
+.hero-bg{position:absolute;inset:0;background:linear-gradient(150deg,#1A0A04 0%,#5C3220 45%,#A06448 80%,#C8962E 100%);}
+.hero-pattern{position:absolute;inset:0;opacity:.05;background-image:repeating-linear-gradient(45deg,#E8C878 0,#E8C878 1px,transparent 0,transparent 50%);background-size:20px 20px;}
+.hero-content{position:relative;z-index:2;text-align:center;max-width:680px;}
+.hero-tag{display:inline-block;border:1px solid rgba(232,200,120,.4);color:var(--gold-light);font-size:.72rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:.4rem 1.1rem;border-radius:100px;margin-bottom:1.75rem;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.4rem,6vw,4.5rem);font-weight:700;color:var(--white);line-height:1.1;margin-bottom:1.25rem;}
 .hero h1 em{color:var(--gold-light);font-style:italic;}
-.hero-sub{font-size:1.05rem;color:rgba(255,255,255,.72);line-height:1.75;max-width:520px;margin:0 auto 2.5rem;animation:fadeUp .8s .3s both;font-weight:300;}
-.hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;animation:fadeUp .8s .4s both;}
-.btn-hero-primary{background:var(--gold);color:var(--white);border:none;padding:.9rem 2.2rem;border-radius:100px;font-size:1rem;font-family:'Outfit',sans-serif;font-weight:600;cursor:pointer;transition:all .25s;text-decoration:none;display:inline-block;letter-spacing:.02em;}
-.btn-hero-primary:hover{background:var(--gold-light);color:var(--brown);transform:translateY(-2px);}
-.btn-hero-outline{background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,.5);padding:.9rem 2.2rem;border-radius:100px;font-size:1rem;font-family:'Outfit',sans-serif;font-weight:500;cursor:pointer;transition:all .25s;text-decoration:none;display:inline-block;}
-.btn-hero-outline:hover{border-color:var(--white);background:rgba(255,255,255,.1);}
-.scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:3;color:rgba(255,255,255,.5);font-size:.75rem;letter-spacing:.1em;text-align:center;animation:bounce 2s ease-in-out infinite;}
-.scroll-hint::before{content:'';display:block;width:1px;height:40px;background:rgba(255,255,255,.3);margin:0 auto .75rem;}
-/* floating cakes */
-.hero-cake-float{position:absolute;z-index:2;animation:floatCake 6s ease-in-out infinite;}
-.hero-cake-float:nth-child(2){right:6%;top:20%;animation-delay:-2s;opacity:.7;}
-.hero-cake-float:nth-child(3){left:5%;bottom:25%;animation-delay:-4s;opacity:.6;}
+.hero-sub{font-size:clamp(.9rem,2.5vw,1.05rem);color:rgba(255,255,255,.72);line-height:1.75;max-width:500px;margin:0 auto 2.25rem;font-weight:300;}
+.hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+.btn-gold{background:var(--gold);color:var(--white);border:none;padding:.85rem 2rem;border-radius:100px;font-size:.95rem;font-family:'Nunito',sans-serif;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all .25s;}
+.btn-gold:hover{background:var(--gold-light);color:var(--brown);transform:translateY(-2px);}
+.btn-outline-w{background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,.5);padding:.85rem 2rem;border-radius:100px;font-size:.95rem;font-family:'Nunito',sans-serif;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block;transition:all .25s;}
+.btn-outline-w:hover{border-color:var(--white);background:rgba(255,255,255,.1);}
+.hero-float{position:absolute;z-index:1;opacity:.18;font-size:clamp(3rem,8vw,6rem);animation:floatEl 6s ease-in-out infinite;}
+.hero-float:nth-child(3){top:15%;left:3%;animation-delay:-2s;}
+.hero-float:nth-child(4){bottom:20%;right:4%;animation-delay:-4s;}
+.scroll-down{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.4);font-size:.7rem;text-align:center;letter-spacing:.1em;}
+.scroll-down::before{content:'';display:block;width:1px;height:36px;background:rgba(255,255,255,.25);margin:0 auto .6rem;}
 
-/* ── SHARED ── */
-.section{padding:6rem 2rem;}
-.container{max-width:1120px;margin:0 auto;}
-.section-eyebrow{font-size:.72rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.75rem;}
-.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:var(--brown);line-height:1.15;margin-bottom:1rem;}
-.section-title em{color:var(--rose-deep);font-style:italic;}
-.section-sub{color:var(--muted);font-size:1rem;line-height:1.7;max-width:540px;}
+/* SHARED */
+.section{padding:5rem 1.5rem;}
+.container{max-width:1100px;margin:0 auto;}
+.eyebrow{font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem;}
+.sec-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;color:var(--brown);line-height:1.15;margin-bottom:.9rem;}
+.sec-title em{color:var(--rose-deep);font-style:italic;}
+.sec-sub{color:var(--muted);font-size:.95rem;line-height:1.7;max-width:520px;}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s,transform .7s;}
+.reveal.visible{opacity:1;transform:none;}
 
-/* ── ABOUT ── */
+/* ABOUT */
 .about{background:var(--white);}
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
-@media(max-width:768px){.about-grid,.reviews-grid,.map-contact-grid{grid-template-columns:1fr!important;gap:2.5rem!important;}.nav-links{display:none;}}
-.about-visual{position:relative;height:480px;}
-.about-img-main{position:absolute;inset:0;border-radius:24px;overflow:hidden;background:linear-gradient(135deg,#5C3220,#A06448);}
-.about-canvas-wrap{width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
-.about-badge{position:absolute;bottom:-1.5rem;right:-1.5rem;background:var(--brown);color:var(--cream);padding:1.2rem 1.5rem;border-radius:20px;text-align:center;}
-.about-badge-num{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:700;color:var(--gold-light);display:block;line-height:1;}
-.about-badge-txt{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;opacity:.8;}
-.about-highlights{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:2rem;}
-.highlight-card{background:var(--cream);border-radius:14px;padding:1rem 1.25rem;border:1px solid rgba(92,50,32,.08);}
-.highlight-icon{font-size:1.4rem;margin-bottom:.4rem;}
-.highlight-label{font-size:.82rem;font-weight:600;color:var(--brown);margin-bottom:.2rem;}
-.highlight-val{font-size:.75rem;color:var(--muted);}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+.about-visual{position:relative;}
+.about-img-box{border-radius:24px;overflow:hidden;background:linear-gradient(135deg,#5C3220,#A06448);aspect-ratio:4/5;display:flex;align-items:center;justify-content:center;}
+.about-img-box canvas{max-width:80%;max-height:80%;}
+.about-badge{position:absolute;bottom:-1rem;right:-1rem;background:var(--brown);color:var(--cream);padding:1rem 1.25rem;border-radius:16px;text-align:center;box-shadow:0 8px 24px rgba(92,50,32,.3);}
+.about-badge-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--gold-light);display:block;line-height:1;}
+.about-badge-txt{font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;opacity:.8;margin-top:.2rem;}
+.about-highlights{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-top:1.75rem;}
+.hl-card{background:var(--cream);border-radius:14px;padding:1rem;border:1px solid rgba(92,50,32,.08);}
+.hl-icon{font-size:1.3rem;margin-bottom:.3rem;}
+.hl-label{font-size:.82rem;font-weight:700;color:var(--brown);margin-bottom:.15rem;}
+.hl-val{font-size:.74rem;color:var(--muted);}
 
-/* ── MENU PREVIEW ── */
-.menu-preview{background:var(--cream);}
-.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.5rem;margin-top:3rem;}
-.menu-card{background:var(--white);border-radius:22px;overflow:hidden;border:1px solid rgba(92,50,32,.08);transition:transform .3s,box-shadow .3s;cursor:pointer;}
-.menu-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(92,50,32,.1);}
-.menu-card-visual{height:190px;display:flex;align-items:center;justify-content:center;position:relative;}
-.menu-card-badge{position:absolute;top:.75rem;right:.75rem;background:var(--gold);color:var(--white);font-size:.68rem;font-weight:700;padding:.22rem .6rem;border-radius:100px;letter-spacing:.04em;}
-.menu-card-body{padding:1.1rem;}
-.menu-card-name{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;color:var(--brown);margin-bottom:.4rem;}
-.menu-card-meta{display:flex;gap:.75rem;font-size:.75rem;color:var(--muted);margin-bottom:.75rem;}
-.menu-card-footer{display:flex;align-items:center;justify-content:space-between;}
-.menu-price{font-size:1.2rem;font-weight:700;color:var(--brown);}
-.btn-sm{background:var(--rose-deep);color:var(--white);border:none;padding:.42rem 1rem;border-radius:100px;font-size:.8rem;font-family:'Outfit',sans-serif;cursor:pointer;transition:background .2s;}
-.btn-sm:hover{background:var(--brown);}
+/* REVIEWS */
+.reviews{background:var(--brown);padding:5rem 1.5rem;}
+.reviews .sec-title{color:var(--white);}
+.reviews .eyebrow{color:var(--gold-light);}
+.rev-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem;margin-top:2.5rem;}
+.rev-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:1.25rem;transition:background .3s;}
+.rev-card:hover{background:rgba(255,255,255,.11);}
+.rev-stars{color:var(--gold-light);font-size:.95rem;margin-bottom:.6rem;}
+.rev-text{color:rgba(255,255,255,.82);font-size:.87rem;line-height:1.7;margin-bottom:1rem;font-style:italic;}
+.rev-author{display:flex;align-items:center;gap:.7rem;}
+.rev-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;color:var(--white);flex-shrink:0;}
+.rev-name{font-weight:700;font-size:.85rem;color:var(--white);}
+.rev-date{font-size:.7rem;color:rgba(255,255,255,.4);}
+.rating-bar{display:flex;gap:.7rem;align-items:center;margin-bottom:.3rem;}
+.rb-label{font-size:.7rem;color:rgba(255,255,255,.5);min-width:8px;}
+.rb-track{flex:1;height:4px;background:rgba(255,255,255,.1);border-radius:10px;overflow:hidden;}
+.rb-fill{height:100%;border-radius:10px;background:var(--gold-light);}
 
-/* ── REVIEWS ── */
-.reviews{background:var(--brown);padding:6rem 2rem;}
-.reviews .section-title{color:var(--white);}
-.reviews .section-eyebrow{color:var(--gold-light);}
-.reviews .section-sub{color:rgba(255,255,255,.65);}
-.reviews-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem;margin-top:3rem;}
-.review-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:1.5rem;transition:background .3s;}
-.review-card:hover{background:rgba(255,255,255,.11);}
-.review-stars{color:var(--gold-light);font-size:1rem;margin-bottom:.75rem;letter-spacing:.1em;}
-.review-text{color:rgba(255,255,255,.85);font-size:.9rem;line-height:1.7;margin-bottom:1.25rem;font-style:italic;}
-.review-author{display:flex;align-items:center;gap:.75rem;}
-.review-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;color:var(--white);flex-shrink:0;}
-.review-name{font-weight:600;font-size:.88rem;color:var(--white);}
-.review-date{font-size:.72rem;color:rgba(255,255,255,.45);}
-.reviews-cta{text-align:center;margin-top:3rem;}
-.rating-summary{display:flex;align-items:center;gap:1.5rem;margin-top:1.5rem;flex-wrap:wrap;}
-.rating-big{font-family:'Cormorant Garamond',serif;font-size:4rem;font-weight:700;color:var(--gold-light);line-height:1;}
-.rating-bars{flex:1;min-width:200px;}
-.rating-bar-row{display:flex;align-items:center;gap:.75rem;margin-bottom:.35rem;}
-.rating-bar-label{font-size:.72rem;color:rgba(255,255,255,.5);min-width:10px;}
-.rating-bar-track{flex:1;height:5px;background:rgba(255,255,255,.12);border-radius:10px;overflow:hidden;}
-.rating-bar-fill{height:100%;border-radius:10px;background:var(--gold-light);}
+/* MAP SECTION */
+.map-sec{background:var(--cream);padding:5rem 1.5rem;}
+.map-grid{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:start;margin-top:2.5rem;}
+.map-box{border-radius:20px;overflow:hidden;border:1px solid rgba(92,50,32,.12);height:360px;background:var(--warm);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;text-align:center;padding:2rem;}
+.map-box-icon{font-size:2.5rem;}
+.map-box-name{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--brown);font-weight:700;}
+.map-box-addr{font-size:.82rem;color:var(--muted);max-width:220px;}
+.btn-maps{background:var(--brown);color:var(--white);border:none;padding:.55rem 1.25rem;border-radius:100px;font-family:'Nunito',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block;transition:background .2s;margin-top:.5rem;}
+.btn-maps:hover{background:var(--brown-light);}
+.contact-list{display:flex;flex-direction:column;gap:1.25rem;}
+.contact-item{display:flex;gap:.9rem;align-items:flex-start;}
+.c-icon{width:40px;height:40px;background:var(--warm);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.c-label{font-size:.68rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.15rem;}
+.c-val{font-size:.88rem;color:var(--brown);font-weight:600;}
+.c-sub{font-size:.74rem;color:var(--muted);}
 
-/* ── MAP & CONTACT ── */
-.map-section{background:var(--cream);padding:6rem 2rem;}
-.map-contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;}
-.map-embed{border-radius:24px;overflow:hidden;height:380px;border:1px solid rgba(92,50,32,.12);background:var(--warm);position:relative;}
-.map-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;color:var(--muted);}
-.map-placeholder-icon{font-size:3rem;}
-.map-placeholder-text{font-size:.9rem;font-weight:500;color:var(--brown);}
-.map-placeholder-addr{font-size:.8rem;color:var(--muted);text-align:center;max-width:240px;}
-.map-btn{margin-top:.5rem;background:var(--brown);color:var(--white);border:none;padding:.55rem 1.2rem;border-radius:100px;font-family:'Outfit',sans-serif;font-size:.82rem;cursor:pointer;transition:background .2s;text-decoration:none;display:inline-block;}
-.map-btn:hover{background:var(--brown-light);}
-.contact-details{padding-top:1rem;}
-.contact-item{display:flex;gap:1rem;margin-bottom:1.5rem;align-items:flex-start;}
-.contact-icon{width:42px;height:42px;background:var(--warm);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
-.contact-label{font-size:.72rem;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.2rem;}
-.contact-val{font-size:.9rem;color:var(--brown);font-weight:500;}
-.contact-sub{font-size:.78rem;color:var(--muted);}
-.hours-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;margin-top:.5rem;}
-.hours-row{font-size:.78rem;color:var(--muted);}
-.hours-row strong{color:var(--brown);}
+/* CTA SECTION */
+.cta-sec{background:linear-gradient(135deg,#1A0A04,#5C3220 50%,#A06448);padding:5rem 1.5rem;text-align:center;position:relative;overflow:hidden;}
+.cta-sec::before{content:'';position:absolute;inset:0;opacity:.04;background-image:repeating-linear-gradient(45deg,#E8C878 0,#E8C878 1px,transparent 0,transparent 50%);background-size:22px 22px;}
+.cta-sec .sec-title{color:var(--white);max-width:560px;margin:0 auto .9rem;}
+.cta-sec .sec-sub{color:rgba(255,255,255,.6);margin:0 auto 2rem;}
 
-/* ── ORDER CTA ── */
-.order-cta-section{background:linear-gradient(135deg,#2A1208,#5C3220 50%,#A06448);padding:6rem 2rem;text-align:center;position:relative;overflow:hidden;}
-.order-cta-section::before{content:'';position:absolute;inset:0;opacity:.05;background-image:repeating-linear-gradient(45deg,var(--gold) 0,var(--gold) 1px,transparent 0,transparent 50%);background-size:24px 24px;}
-.order-cta-content{position:relative;z-index:1;}
-.order-cta-section .section-eyebrow{color:var(--gold-light);}
-.order-cta-section .section-title{color:var(--white);max-width:600px;margin:0 auto 1rem;}
-.order-cta-section .section-sub{color:rgba(255,255,255,.65);margin:0 auto 2.5rem;}
-.btn-cta-order{background:var(--gold);color:var(--white);border:none;padding:1.1rem 3rem;border-radius:100px;font-size:1.1rem;font-family:'Outfit',sans-serif;font-weight:700;cursor:pointer;transition:all .25s;text-decoration:none;display:inline-block;letter-spacing:.03em;}
-.btn-cta-order:hover{background:var(--gold-light);color:var(--brown);transform:translateY(-3px);box-shadow:0 12px 40px rgba(200,150,46,.4);}
-
-/* ── FOOTER ── */
-footer{background:var(--dark);color:rgba(255,255,255,.5);padding:2.5rem 3rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:gap;}
-.footer-logo{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;color:var(--gold-light);}
-.footer-links{display:flex;gap:1.5rem;}
-.footer-links a{color:rgba(255,255,255,.4);text-decoration:none;font-size:.8rem;transition:color .2s;}
+/* FOOTER */
+footer{background:var(--dark);color:rgba(255,255,255,.45);padding:2rem 2rem;display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between;}
+.footer-logo{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:var(--gold-light);}
+.footer-links{display:flex;gap:1.25rem;flex-wrap:wrap;}
+.footer-links a{color:rgba(255,255,255,.4);text-decoration:none;font-size:.78rem;transition:color .2s;}
 .footer-links a:hover{color:var(--gold-light);}
 
-/* ── ANIMATIONS ── */
-@keyframes fadeUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);}}
-@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-8px);}}
-@keyframes floatCake{0%,100%{transform:translateY(0) rotate(-3deg);}50%{transform:translateY(-18px) rotate(3deg);}}
-.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s,transform .7s;}
-.reveal.visible{opacity:1;transform:none;}
+/* ANIMATIONS */
+@keyframes floatEl{0%,100%{transform:translateY(0) rotate(-5deg);}50%{transform:translateY(-16px) rotate(5deg);}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .nav-links{display:none;}
+  .nav-hamburger{display:flex;}
+  .about-grid,.map-grid{grid-template-columns:1fr!important;gap:2rem!important;}
+  .about-badge{bottom:-.5rem;right:-.5rem;}
+  .rev-grid{grid-template-columns:1fr;}
+  .hero-float{display:none;}
+}
+@media(max-width:500px){
+  .about-highlights{grid-template-columns:1fr;}
+  .hero-btns{flex-direction:column;align-items:center;}
+  .btn-gold,.btn-outline-w{width:100%;max-width:260px;text-align:center;}
+}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav id="mainNav">
   <a class="nav-logo" href="index.html">🎂 Sweet Layers</a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
-    <li><a href="#menu">Menu</a></li>
     <li><a href="#reviews">Reviews</a></li>
     <li><a href="#location">Location</a></li>
   </ul>
-  <a href="order.html" class="nav-cta">Order Now</a>
+  <a href="order.html" class="nav-cta">Order Cakes</a>
+  <button class="nav-hamburger" id="hamburger" onclick="toggleMobile()">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<div class="nav-mobile" id="navMobile">
+  <a href="#about" onclick="closeMobile()">About Us</a>
+  <a href="#reviews" onclick="closeMobile()">Reviews</a>
+  <a href="#location" onclick="closeMobile()">Location</a>
+  <a href="order.html" style="color:var(--gold);font-weight:700;">🎂 Order Cakes →</a>
+</div>
 
 <!-- HERO -->
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-pattern"></div>
-  <canvas class="hero-cake-float" id="heroFloat1" width="160" height="200" style="right:7%;top:18%;"></canvas>
-  <canvas class="hero-cake-float" id="heroFloat2" width="110" height="140" style="left:4%;bottom:22%;"></canvas>
+  <div class="hero-float">🎂</div>
+  <div class="hero-float">✨</div>
   <div class="hero-content">
-    <span class="hero-eyebrow">✦ Artisan Bakery · Est. 2016 · Nellore</span>
-    <h1>Where every cake tells a <em>story</em></h1>
+    <span class="hero-tag">✦ Artisan Bakery · Est. 2016 · Nellore</span>
+    <h1>Every cake tells a <em>story</em></h1>
     <p class="hero-sub">Handcrafted with premium ingredients, baked fresh daily — from intimate birthdays to grand weddings, we create edible art that tastes as beautiful as it looks.</p>
     <div class="hero-btns">
-      <a href="order.html" class="btn-hero-primary">🎂 Order Your Cake</a>
-      <a href="#about" class="btn-hero-outline">Our Story</a>
+      <a href="order.html" class="btn-gold">🎂 Order Your Cake</a>
+      <a href="#about" class="btn-outline-w">Our Story</a>
     </div>
   </div>
-  <div class="scroll-hint">Scroll</div>
+  <div class="scroll-down">Scroll to explore</div>
 </section>
 
 <!-- ABOUT -->
 <section class="section about" id="about">
   <div class="container">
     <div class="about-grid">
-      <div class="about-visual">
-        <div class="about-img-main">
-          <div class="about-canvas-wrap">
-            <canvas id="aboutCake" width="320" height="380"></canvas>
-          </div>
+      <div class="about-visual reveal">
+        <div class="about-img-box">
+          <canvas id="aboutCake" width="260" height="300"></canvas>
         </div>
         <div class="about-badge">
           <span class="about-badge-num">8+</span>
@@ -205,443 +200,281 @@ footer{background:var(--dark);color:rgba(255,255,255,.5);padding:2.5rem 3rem;dis
         </div>
       </div>
       <div>
-        <p class="section-eyebrow reveal">Our Story</p>
-        <h2 class="section-title reveal">Baked with <em>passion</em>, served with love</h2>
-        <p class="section-sub reveal" style="margin-bottom:1.25rem">Sweet Layers began in 2016 in a tiny kitchen in Nellore, where our founder Jayaprakash Rao spent years perfecting the art of cake-making — one layer at a time.</p>
-        <p class="section-sub reveal" style="margin-bottom:2rem">Today, we're a beloved fixture of Nellore's celebrations. Every cake is made to order with locally sourced ingredients, zero preservatives, and an absurd amount of love.</p>
-        <div class="about-highlights reveal">
-          <div class="highlight-card"><div class="highlight-icon">🌾</div><div class="highlight-label">Fresh Ingredients</div><div class="highlight-val">Sourced locally every morning</div></div>
-          <div class="highlight-card"><div class="highlight-icon">🎨</div><div class="highlight-label">Custom Designs</div><div class="highlight-val">Every cake is one-of-a-kind</div></div>
-          <div class="highlight-card"><div class="highlight-icon">🏆</div><div class="highlight-label">5000+ Cakes</div><div class="highlight-val">Delivered with smiles</div></div>
-          <div class="highlight-card"><div class="highlight-icon">🚫</div><div class="highlight-label">No Preservatives</div><div class="highlight-val">100% natural, always fresh</div></div>
+        <p class="eyebrow reveal">Our Story</p>
+        <h2 class="sec-title reveal">Baked with <em>passion</em>,<br>served with love</h2>
+        <p class="sec-sub reveal" style="margin-bottom:1rem">Sweet Layers began in 2016 in a tiny kitchen in Nellore, where our founder Jayaprakash Rao spent years perfecting the art of cake-making — one layer at a time.</p>
+        <p class="sec-sub reveal" style="margin-bottom:1.75rem">Today, we're Nellore's most-loved bakery. Every cake is made to order with locally sourced ingredients, zero preservatives, and an absurd amount of love.</p>
+        <div class="about-highlights">
+          <div class="hl-card reveal"><div class="hl-icon">🌾</div><div class="hl-label">Fresh Ingredients</div><div class="hl-val">Sourced locally every morning</div></div>
+          <div class="hl-card reveal"><div class="hl-icon">🎨</div><div class="hl-label">Custom Designs</div><div class="hl-val">Every cake is one-of-a-kind</div></div>
+          <div class="hl-card reveal"><div class="hl-icon">🏆</div><div class="hl-label">5000+ Cakes</div><div class="hl-val">Delivered with smiles</div></div>
+          <div class="hl-card reveal"><div class="hl-icon">🚫</div><div class="hl-label">No Preservatives</div><div class="hl-val">100% natural, always fresh</div></div>
         </div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- MENU PREVIEW -->
-<section class="section menu-preview" id="menu">
-  <div class="container">
-    <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:.5rem">
-      <div>
-        <p class="section-eyebrow reveal">Signature Collection</p>
-        <h2 class="section-title reveal">Our <em>bestsellers</em></h2>
-      </div>
-      <a href="order.html" class="btn-sm reveal" style="margin-bottom:.5rem">View Full Menu →</a>
-    </div>
-    <div class="menu-grid" id="menuGrid"></div>
   </div>
 </section>
 
 <!-- REVIEWS -->
 <section class="reviews" id="reviews">
   <div class="container">
-    <p class="section-eyebrow reveal">Customer Love</p>
-    <h2 class="section-title reveal">What Nellore <em>says</em></h2>
-    <div class="rating-summary reveal">
-      <div class="rating-big">4.9</div>
+    <div style="display:flex;flex-wrap:wrap;gap:2rem;justify-content:space-between;align-items:flex-end;margin-bottom:1.5rem">
       <div>
-        <div style="color:var(--gold-light);font-size:1.1rem;margin-bottom:.4rem">★★★★★</div>
-        <div style="font-size:.8rem;color:rgba(255,255,255,.5)">Based on 340+ reviews</div>
+        <p class="eyebrow reveal">Customer Love</p>
+        <h2 class="sec-title reveal">What Nellore <em>says</em></h2>
       </div>
-      <div class="rating-bars">
-        <div class="rating-bar-row"><span class="rating-bar-label">5</span><div class="rating-bar-track"><div class="rating-bar-fill" style="width:88%"></div></div></div>
-        <div class="rating-bar-row"><span class="rating-bar-label">4</span><div class="rating-bar-track"><div class="rating-bar-fill" style="width:9%"></div></div></div>
-        <div class="rating-bar-row"><span class="rating-bar-label">3</span><div class="rating-bar-track"><div class="rating-bar-fill" style="width:2%"></div></div></div>
-        <div class="rating-bar-row"><span class="rating-bar-label">2</span><div class="rating-bar-track"><div class="rating-bar-fill" style="width:1%"></div></div></div>
-        <div class="rating-bar-row"><span class="rating-bar-label">1</span><div class="rating-bar-track"><div class="rating-bar-fill" style="width:0%"></div></div></div>
-      </div>
-    </div>
-    <div class="reviews-grid" id="reviewsGrid"></div>
-    <div class="reviews-cta reveal">
-      <a href="order.html" class="btn-hero-primary" style="display:inline-block">Order Your Cake Today →</a>
-    </div>
-  </div>
-</section>
-
-<!-- MAP & CONTACT -->
-<section class="map-section" id="location">
-  <div class="container">
-    <div style="margin-bottom:3rem">
-      <p class="section-eyebrow reveal">Find Us</p>
-      <h2 class="section-title reveal">Visit the <em>bakery</em></h2>
-    </div>
-    <div class="map-contact-grid">
-      <div class="map-embed reveal">
-        <div class="map-placeholder">
-          <div class="map-placeholder-icon">📍</div>
-          <div class="map-placeholder-text">Sweet Layers Bakery</div>
-          <div class="map-placeholder-addr">123 Baker Street, Nellore, Andhra Pradesh — 524001</div>
-          <a href="https://maps.google.com/?q=Nellore+Andhra+Pradesh" target="_blank" class="map-btn">Open in Google Maps ↗</a>
-        </div>
-      </div>
-      <div class="contact-details reveal">
-        <div class="contact-item">
-          <div class="contact-icon">📞</div>
+      <div class="reveal" style="min-width:200px">
+        <div style="display:flex;align-items:center;gap:1rem;">
+          <div style="font-family:'Playfair Display',serif;font-size:3.5rem;font-weight:700;color:var(--gold-light);line-height:1">4.9</div>
           <div>
-            <div class="contact-label">Phone / WhatsApp</div>
-            <div class="contact-val">+91 96427 10123</div>
-            <div class="contact-sub">Available 8 AM – 9 PM daily</div>
-          </div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-icon">📍</div>
-          <div>
-            <div class="contact-label">Address</div>
-            <div class="contact-val">123 Baker Street</div>
-            <div class="contact-sub">Nellore, Andhra Pradesh 524001</div>
-          </div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-icon">⏰</div>
-          <div>
-            <div class="contact-label">Business Hours</div>
-            <div class="hours-grid">
-              <div class="hours-row"><strong>Mon–Fri</strong></div><div class="hours-row">8 AM – 9 PM</div>
-              <div class="hours-row"><strong>Saturday</strong></div><div class="hours-row">8 AM – 10 PM</div>
-              <div class="hours-row"><strong>Sunday</strong></div><div class="hours-row">9 AM – 8 PM</div>
+            <div style="color:var(--gold-light);font-size:1rem">★★★★★</div>
+            <div style="font-size:.75rem;color:rgba(255,255,255,.45);margin-top:.25rem">340+ reviews</div>
+            <div style="margin-top:.5rem">
+              <div class="rating-bar"><span class="rb-label">5</span><div class="rb-track"><div class="rb-fill" style="width:88%"></div></div></div>
+              <div class="rating-bar"><span class="rb-label">4</span><div class="rb-track"><div class="rb-fill" style="width:9%"></div></div></div>
+              <div class="rating-bar"><span class="rb-label">3</span><div class="rb-track"><div class="rb-fill" style="width:2%"></div></div></div>
             </div>
           </div>
         </div>
-        <div class="contact-item">
-          <div class="contact-icon">🏍️</div>
-          <div>
-            <div class="contact-label">Delivery</div>
-            <div class="contact-val">Free above ₹1500 order</div>
-            <div class="contact-sub">Within 15 km radius · ₹80 delivery charge</div>
-          </div>
-        </div>
+      </div>
+    </div>
+    <div class="rev-grid" id="revGrid"></div>
+    <div style="text-align:center;margin-top:2.5rem">
+      <a href="order.html" class="btn-gold reveal" style="display:inline-block">Order Your Cake Today →</a>
+    </div>
+  </div>
+</section>
+
+<!-- MAP -->
+<section class="map-sec" id="location">
+  <div class="container">
+    <p class="eyebrow reveal">Find Us</p>
+    <h2 class="sec-title reveal">Visit the <em>bakery</em></h2>
+    <div class="map-grid">
+      <div class="map-box reveal">
+        <div class="map-box-icon">📍</div>
+        <div class="map-box-name">Sweet Layers Bakery</div>
+        <div class="map-box-addr">123 Baker Street, Nellore, Andhra Pradesh — 524001</div>
+        <a href="https://maps.google.com/?q=Sweet+Layers+Bakery+Nellore+Andhra+Pradesh" target="_blank" class="btn-maps">Open in Google Maps ↗</a>
+        <a href="https://maps.google.com/?q=Sweet+Layers+Bakery+Nellore+Andhra+Pradesh&dirflg=d" target="_blank" class="btn-maps" style="background:var(--gold);margin-top:.4rem">Get Directions ↗</a>
+      </div>
+      <div class="contact-list reveal">
+        <div class="contact-item"><div class="c-icon">📞</div><div><div class="c-label">Phone / WhatsApp</div><div class="c-val">+91 96427 10123</div><div class="c-sub">Available 8 AM – 9 PM daily</div></div></div>
+        <div class="contact-item"><div class="c-icon">📍</div><div><div class="c-label">Address</div><div class="c-val">123 Baker Street</div><div class="c-sub">Nellore, Andhra Pradesh 524001</div></div></div>
+        <div class="contact-item"><div class="c-icon">⏰</div><div><div class="c-label">Hours</div><div class="c-val">Mon–Sat: 8 AM – 9 PM</div><div class="c-sub">Sunday: 9 AM – 8 PM</div></div></div>
+        <div class="contact-item"><div class="c-icon">🛵</div><div><div class="c-label">Delivery</div><div class="c-val">₹80 within 15 km</div><div class="c-sub">Free above ₹1500 order value</div></div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ORDER CTA -->
-<section class="order-cta-section">
-  <div class="order-cta-content">
-    <p class="section-eyebrow">Ready to order?</p>
-    <h2 class="section-title">Design your <em>perfect cake</em></h2>
-    <p class="section-sub">Choose from our catalog or build yours from scratch — layer by layer, flavor by flavor. Your dream cake is just a few clicks away.</p>
-    <a href="order.html" class="btn-cta-order">🎂 Start Building My Cake</a>
+<!-- CTA -->
+<section class="cta-sec">
+  <div style="position:relative;z-index:1">
+    <p class="eyebrow" style="color:var(--gold-light)">Ready?</p>
+    <h2 class="sec-title" style="color:var(--white);max-width:560px;margin:0 auto .9rem">Design your <em>perfect cake</em></h2>
+    <p class="sec-sub" style="color:rgba(255,255,255,.6);margin:0 auto 2rem">Browse pre-designed cakes or build yours from scratch — layer by layer, flavor by flavor.</p>
+    <a href="order.html" class="btn-gold" style="font-size:1.05rem;padding:1rem 2.5rem">🎂 Start Building My Cake</a>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <span class="footer-logo">🎂 Sweet Layers Bakery</span>
   <div class="footer-links">
-    <a href="#about">About</a>
-    <a href="#menu">Menu</a>
-    <a href="#reviews">Reviews</a>
-    <a href="order.html">Order</a>
+    <a href="#about">About</a><a href="#reviews">Reviews</a><a href="#location">Location</a><a href="order.html">Order</a>
   </div>
-  <span style="font-size:.78rem">© 2025 Sweet Layers Bakery, Nellore</span>
+  <span style="font-size:.75rem">© 2025 Sweet Layers Bakery, Nellore</span>
 </footer>
 
 <script>
-// ── NAV SCROLL ──────────────────────────────────
-window.addEventListener('scroll',()=>{
-  document.getElementById('mainNav').classList.toggle('scrolled',window.scrollY>60);
-});
+// NAV
+window.addEventListener('scroll',()=>document.getElementById('mainNav').classList.toggle('scrolled',scrollY>60));
+function toggleMobile(){document.getElementById('navMobile').classList.toggle('open');}
+function closeMobile(){document.getElementById('navMobile').classList.remove('open');}
 
-// ── CAKE DRAWING ────────────────────────────────
-function hexToRgb(hex){
-  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
-  return{r,g,b};
+// CAKE DRAW HELPER
+function shade(hex,p){
+  hex=hex.replace('#','');
+  if(hex.length===3)hex=hex.split('').map(c=>c+c).join('');
+  const r=parseInt(hex.slice(0,2),16),g=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);
+  const t=p<0?0:255,a=Math.abs(p);
+  return'#'+[r,g,b].map(v=>Math.max(0,Math.min(255,Math.round(v+(t-v)*a))).toString(16).padStart(2,'0')).join('');
 }
-function shadeColor(hex,pct){
-  const {r,g,b}=hexToRgb(hex);
-  const t=pct<0?0:255,p=pct<0?-pct:pct;
-  return'#'+[r,g,b].map(c=>Math.round(c+(t-c)*p).toString(16).padStart(2,'0')).join('');
-}
-
 function drawCake(canvas,opts){
   const ctx=canvas.getContext('2d');
   const W=canvas.width,H=canvas.height;
   ctx.clearRect(0,0,W,H);
-
   const layers=Math.max(1,Math.min(5,opts.layers||2));
-  const fC=opts.flavorColor||'#FFF3C4';
-  const frC=opts.frostColor||'#FFFAF5';
-
-  // Tiered widths: bottom layer = widest, top layer = narrowest
-  const maxCakeW=W*0.72;
-  const minCakeW=maxCakeW*0.58;
-  const layerHeight=44;
-  const totalH=layers*layerHeight;
-  const plateY=H*0.82;
-  const cakeBaseY=plateY-totalH-10;
-
-  // Shadow
-  ctx.beginPath();ctx.ellipse(W/2,plateY+10,maxCakeW/2+8,10,0,0,Math.PI*2);
-  ctx.fillStyle='rgba(0,0,0,0.12)';ctx.fill();
-
-  // Plate
-  ctx.beginPath();ctx.ellipse(W/2,plateY,maxCakeW/2+16,11,0,0,Math.PI*2);
-  const plateGrad=ctx.createRadialGradient(W/2-10,plateY-4,2,W/2,plateY,maxCakeW/2+16);
-  plateGrad.addColorStop(0,'#FEFCF8');plateGrad.addColorStop(1,'#E8DDD0');
-  ctx.fillStyle=plateGrad;ctx.fill();
-  ctx.strokeStyle='#CFC0B0';ctx.lineWidth=1;ctx.stroke();
-
-  // Draw layers bottom → top
+  const fC=opts.flavorColor||'#FFF3C4',frC=opts.frostColor||'#FFFAF5';
+  const maxW=W*.7,minW=maxW*.52;
+  const lH=Math.min(42,(H*.58)/layers);
+  const totalH=layers*lH,baseY=H*.84;
+  ctx.beginPath();ctx.ellipse(W/2,baseY+8,maxW/2+10,9,0,0,Math.PI*2);
+  ctx.fillStyle='rgba(0,0,0,.1)';ctx.fill();
+  const pg=ctx.createRadialGradient(W/2-10,baseY-3,2,W/2,baseY,maxW/2+16);
+  pg.addColorStop(0,'#FEFCF8');pg.addColorStop(1,'#E0D0C0');
+  ctx.beginPath();ctx.ellipse(W/2,baseY,maxW/2+16,11,0,0,Math.PI*2);
+  ctx.fillStyle=pg;ctx.fill();ctx.strokeStyle='#C8B0A0';ctx.lineWidth=1;ctx.stroke();
   for(let i=layers-1;i>=0;i--){
-    const t=layers===1?0:i/(layers-1);
-    const lW=maxCakeW-(maxCakeW-minCakeW)*(1-t);// bottom is widest
-    const lX=(W-lW)/2;
-    const lY=cakeBaseY+(layers-1-i)*layerHeight;
-    const lH=layerHeight-3;
-
-    // Cylinder side face
-    const sideGrad=ctx.createLinearGradient(lX,lY,lX+lW,lY);
-    sideGrad.addColorStop(0,shadeColor(fC,-0.22));
-    sideGrad.addColorStop(0.12,shadeColor(fC,-0.08));
-    sideGrad.addColorStop(0.5,fC);
-    sideGrad.addColorStop(0.85,shadeColor(fC,-0.06));
-    sideGrad.addColorStop(1,shadeColor(fC,-0.2));
-    ctx.beginPath();ctx.rect(lX,lY,lW,lH);
-    ctx.fillStyle=sideGrad;ctx.fill();
-
-    // Frosting collar on top of each layer
-    const frostH=10;
-    const frostGrad=ctx.createLinearGradient(lX,lY,lX+lW,lY);
-    frostGrad.addColorStop(0,shadeColor(frC,-0.1));
-    frostGrad.addColorStop(0.5,frC);
-    frostGrad.addColorStop(1,shadeColor(frC,-0.08));
-    ctx.beginPath();ctx.rect(lX,lY,lW,frostH);
-    ctx.fillStyle=frostGrad;ctx.fill();
-
-    // Wavy frosting drips on sides
-    ctx.beginPath();ctx.moveTo(lX,lY+frostH);
-    const waves=Math.floor(lW/18);
-    for(let w=0;w<=waves;w++){
-      const wx=lX+w*(lW/waves);
-      const wy=lY+frostH+(w%2===0?8:4);
-      ctx.lineTo(wx,wy);
-    }
-    ctx.lineTo(lX+lW,lY+frostH);ctx.closePath();
-    ctx.fillStyle=frC;ctx.fill();
-
-    // Bottom ellipse for 3D depth
-    ctx.beginPath();ctx.ellipse(W/2,lY+lH,lW/2,6,0,0,Math.PI*2);
-    ctx.fillStyle=shadeColor(fC,-0.18);ctx.fill();
-
-    // Top ellipse
-    ctx.beginPath();ctx.ellipse(W/2,lY,lW/2,6,0,0,Math.PI*2);
-    const topGrad=ctx.createRadialGradient(W/2,lY,0,W/2,lY,lW/2);
-    topGrad.addColorStop(0,frC);topGrad.addColorStop(1,shadeColor(frC,-0.12));
-    ctx.fillStyle=topGrad;ctx.fill();
-    ctx.strokeStyle=shadeColor(frC,-0.15);ctx.lineWidth=0.5;ctx.stroke();
+    const t=layers===1?0:(layers-1-i)/(layers-1);
+    const lW=maxW-(maxW-minW)*t;
+    const lX=(W-lW)/2,lY=baseY-totalH+i*lH,lEl=lW*.18/2;
+    ctx.beginPath();ctx.ellipse(W/2,lY+lH-1,lW/2,lEl,0,0,Math.PI*2);
+    ctx.fillStyle=shade(fC,-.22);ctx.fill();
+    const sg=ctx.createLinearGradient(lX,0,lX+lW,0);
+    sg.addColorStop(0,shade(fC,-.18));sg.addColorStop(.5,fC);sg.addColorStop(1,shade(fC,-.12));
+    ctx.beginPath();ctx.rect(lX,lY,lW,lH-2);ctx.fillStyle=sg;ctx.fill();
+    const fb=Math.min(10,lH*.28);
+    ctx.beginPath();ctx.rect(lX,lY,lW,fb);ctx.fillStyle=frC;ctx.fill();
+    ctx.beginPath();ctx.moveTo(lX,lY+fb);
+    const wc=Math.max(3,Math.floor(lW/15));
+    for(let w=0;w<=wc;w++){const wx=lX+w*(lW/wc);ctx.lineTo(wx,lY+fb+(w%2===0?7:3));}
+    ctx.lineTo(lX+lW,lY+fb);ctx.closePath();ctx.fillStyle=frC;ctx.fill();
+    const tg=ctx.createRadialGradient(W/2,lY,0,W/2,lY,lW/2);
+    tg.addColorStop(0,frC);tg.addColorStop(1,shade(frC,-.1));
+    ctx.beginPath();ctx.ellipse(W/2,lY,lW/2,lEl,0,0,Math.PI*2);
+    ctx.fillStyle=tg;ctx.fill();ctx.strokeStyle=shade(frC,-.12);ctx.lineWidth=.5;ctx.stroke();
   }
-
-  // Frosting drip blobs on top
-  const topLayer=cakeBaseY;
-  const topW=minCakeW;
-  const topX=(W-topW)/2;
+  const topY=baseY-totalH,topW=minW,topX=(W-topW)/2;
   for(let d=0;d<6;d++){
-    const dx=topX+topW*(0.1+d*0.16);
-    const dLen=7+Math.sin(d*1.9+1)*5;
-    ctx.beginPath();
-    ctx.moveTo(dx-3,topLayer);
-    ctx.bezierCurveTo(dx-5,topLayer+dLen*0.4,dx+5,topLayer+dLen*0.7,dx,topLayer+dLen);
-    ctx.bezierCurveTo(dx-5,topLayer+dLen*0.7,dx+5,topLayer+dLen*0.4,dx+3,topLayer);
+    const dx=topX+topW*(.07+d*.16),dl=5+Math.sin(d*1.8)*4;
+    ctx.beginPath();ctx.moveTo(dx-2.5,topY);
+    ctx.bezierCurveTo(dx-4,topY+dl*.4,dx+4,topY+dl*.7,dx,topY+dl);
+    ctx.bezierCurveTo(dx-3,topY+dl*.7,dx+3,topY+dl*.4,dx+2.5,topY);
     ctx.closePath();ctx.fillStyle=frC;ctx.fill();
   }
-
-  // Toppings
-  const tList=opts.toppings||[];
-  const topMidY=topLayer-6;
-
-  if(tList.includes('Strawberries')){
-    [[W/2-topW*0.22,topMidY-2],[W/2+topW*0.18,topMidY-1],[W/2,topMidY-4]].forEach(([sx,sy])=>{
-      // realistic strawberry
-      ctx.beginPath();
-      ctx.moveTo(sx,sy-10);
-      ctx.bezierCurveTo(sx+8,sy-12,sx+9,sy-2,sx,sy+4);
-      ctx.bezierCurveTo(sx-9,sy-2,sx-8,sy-12,sx,sy-10);
-      ctx.fillStyle='#CC2200';ctx.fill();
-      // seeds
-      ctx.fillStyle='rgba(255,220,0,0.7)';
-      [[0,-6],[4,-3],[-4,-3],[2,1],[-3,1]].forEach(([ox,oy])=>{
-        ctx.beginPath();ctx.ellipse(sx+ox,sy+oy,1,1.5,0.3,0,Math.PI*2);ctx.fill();
+  (opts.toppings||[]).forEach(t=>{
+    if(t==='Strawberries'){
+      [[W/2-topW*.2,topY-4],[W/2+topW*.18,topY-3],[W/2,topY-7]].forEach(([sx,sy])=>{
+        const g=ctx.createRadialGradient(sx-1,sy-3,1,sx,sy,8);
+        g.addColorStop(0,'#FF5555');g.addColorStop(1,'#990000');
+        ctx.beginPath();ctx.moveTo(sx,sy-9);
+        ctx.bezierCurveTo(sx+8,sy-11,sx+9,sy-1,sx,sy+5);
+        ctx.bezierCurveTo(sx-9,sy-1,sx-8,sy-11,sx,sy-9);
+        ctx.fillStyle=g;ctx.fill();
+        [[-1,-5],[3,-2],[-3,-2],[1,1],[-2,1]].forEach(([ox,oy])=>{
+          ctx.beginPath();ctx.ellipse(sx+ox,sy+oy,.9,1.4,.3,0,Math.PI*2);
+          ctx.fillStyle='rgba(255,240,100,.7)';ctx.fill();
+        });
+        ctx.fillStyle='#2D7A2D';
+        [[-3,-10],[0,-12],[3,-10]].forEach(([ox,oy])=>{ctx.beginPath();ctx.ellipse(sx+ox,sy+oy,1.8,3.2,ox*.08,0,Math.PI*2);ctx.fill();});
       });
-      // leaf
-      ctx.fillStyle='#228B22';ctx.beginPath();
-      ctx.moveTo(sx,sy-10);ctx.bezierCurveTo(sx-6,sy-18,sx-2,sy-14,sx,sy-12);ctx.fill();
-      ctx.beginPath();ctx.moveTo(sx,sy-10);ctx.bezierCurveTo(sx+6,sy-18,sx+2,sy-14,sx,sy-12);ctx.fill();
-    });
-  }
-
-  if(tList.includes('Fresh Flowers')){
-    [[W/2+topW*0.1,topMidY-3],[W/2-topW*0.15,topMidY-1]].forEach(([fx,fy])=>{
-      ['#FFB7C5','#FF8FAB','#FFC0CB'].forEach((pColor,pi)=>{
-        const angle=(pi/3)*Math.PI*2;
-        ctx.beginPath();
-        ctx.ellipse(fx+Math.cos(angle)*5,fy+Math.sin(angle)*5,4,6,angle,0,Math.PI*2);
-        ctx.fillStyle=pColor;ctx.fill();
+    }
+    if(t==='Fresh Flowers'){
+      [[W/2+topW*.14,topY-5],[W/2-topW*.16,topY-4]].forEach(([fx,fy])=>{
+        ['#FFB7C5','#FF8FAB','#FFC0CB','#FF6B9D','#FFD6E0'].forEach((pc,pi)=>{
+          const pa=(pi/5)*Math.PI*2;
+          ctx.beginPath();ctx.ellipse(fx+Math.cos(pa)*5.5,fy+Math.sin(pa)*5.5,4,6,pa,0,Math.PI*2);
+          ctx.fillStyle=pc;ctx.fill();
+        });
+        const cg=ctx.createRadialGradient(fx,fy,0,fx,fy,4);
+        cg.addColorStop(0,'#FFEF44');cg.addColorStop(1,'#FFB800');
+        ctx.beginPath();ctx.arc(fx,fy,4,0,Math.PI*2);ctx.fillStyle=cg;ctx.fill();
       });
-      ctx.beginPath();ctx.arc(fx,fy,3.5,0,Math.PI*2);
-      ctx.fillStyle='#FFE566';ctx.fill();
-    });
-  }
-
-  if(tList.includes('Macarons')){
-    [[W/2-topW*0.2,topMidY-5],[W/2+topW*0.2,topMidY-5]].forEach(([mx,my],mi)=>{
-      const mColors=[['#F4B8C1','#E890A0'],['#C8E6C9','#90C695']];
-      const[top,bot]=mColors[mi%mColors.length];
-      ctx.beginPath();ctx.ellipse(mx,my-4,9,5,0,0,Math.PI*2);ctx.fillStyle=top;ctx.fill();
-      ctx.beginPath();ctx.rect(mx-9,my-4,18,4);ctx.fillStyle='#FFFAF5';ctx.fill();
-      ctx.beginPath();ctx.ellipse(mx,my,9,5,0,0,Math.PI*2);ctx.fillStyle=bot;ctx.fill();
-    });
-  }
-
-  if(tList.includes('Sprinkles')){
-    const sColors=['#FF6B6B','#FFE66D','#4ECDC4','#45B7D1','#96CEB4','#FF99CC'];
-    for(let s=0;s<20;s++){
-      const sx=topX+8+Math.random()*(topW-16);
-      const sy=topMidY-2+Math.random()*(-8);
-      const angle=Math.random()*Math.PI;
-      ctx.save();ctx.translate(sx,sy);ctx.rotate(angle);
-      ctx.beginPath();ctx.rect(-4,-1.5,8,3);
-      ctx.fillStyle=sColors[s%sColors.length];ctx.fill();ctx.restore();
     }
-  }
-
-  if(tList.includes('Gold Flakes')){
-    ctx.fillStyle='rgba(200,150,46,0.85)';
-    for(let g=0;g<14;g++){
-      const gx=topX+6+Math.random()*(topW-12);
-      const gy=topMidY-2+Math.random()*(-10);
-      const gs=1.5+Math.random()*3;
-      ctx.save();ctx.translate(gx,gy);ctx.rotate(Math.random()*Math.PI);
-      ctx.beginPath();ctx.rect(-gs/2,-gs/4,gs,gs/2);
-      ctx.globalAlpha=0.6+Math.random()*0.4;ctx.fill();ctx.restore();
+    if(t==='Candles'){
+      const cc=['#F4B8C1','#FFE066','#8EC4E8'];
+      [-topW*.22,0,topW*.22].forEach((cx2,ci)=>{
+        const canX=W/2+cx2,canY=topY-22;
+        ctx.beginPath();ctx.rect(canX-3,canY,6,18);ctx.fillStyle=cc[ci];ctx.fill();
+        ctx.beginPath();ctx.moveTo(canX,canY);
+        ctx.bezierCurveTo(canX+4,canY-5,canX+5,canY-11,canX,canY-15);
+        ctx.bezierCurveTo(canX-5,canY-11,canX-4,canY-5,canX,canY);
+        ctx.fillStyle='#FFB347';ctx.fill();
+        ctx.beginPath();ctx.moveTo(canX,canY-2);
+        ctx.bezierCurveTo(canX+2,canY-6,canX+2,canY-10,canX,canY-13);
+        ctx.bezierCurveTo(canX-2,canY-10,canX-2,canY-6,canX,canY-2);
+        ctx.fillStyle='#FFEF99';ctx.fill();
+      });
     }
-    ctx.globalAlpha=1;
-  }
-
-  if(tList.includes('Chocolate Drip')){
-    ctx.fillStyle='#4A1C00';
-    for(let d=0;d<5;d++){
-      const dripX=topX+topW*(0.1+d*0.2);
-      const dripLen=18+Math.random()*22;
-      ctx.beginPath();
-      ctx.moveTo(dripX-4,topLayer);
-      ctx.bezierCurveTo(dripX-5,topLayer+dripLen*0.5,dripX+5,topLayer+dripLen*0.8,dripX,topLayer+dripLen);
-      ctx.bezierCurveTo(dripX-5,topLayer+dripLen*0.8,dripX+5,topLayer+dripLen*0.5,dripX+4,topLayer);
-      ctx.fill();
+    if(t==='Gold Flakes'){
+      const rng=s=>{let x=Math.sin(s*7.3+2)*1e4;return x-Math.floor(x);};
+      for(let g=0;g<14;g++){
+        const gx=topX+4+(rng(g)*.9)*(topW-8),gy=topY-(rng(g*3)*12);
+        const gs=1.5+rng(g*7)*2.5;
+        ctx.save();ctx.translate(gx,gy);ctx.rotate(rng(g*11)*Math.PI);
+        ctx.globalAlpha=.55+rng(g*5)*.45;
+        ctx.fillStyle=`hsl(${42+rng(g*9)*10},85%,${52+rng(g*17)*12}%)`;
+        ctx.beginPath();ctx.moveTo(0,-gs);ctx.lineTo(gs*.5,0);ctx.lineTo(0,gs);ctx.lineTo(-gs*.5,0);ctx.closePath();
+        ctx.fill();ctx.restore();
+      }
+      ctx.globalAlpha=1;
     }
-  }
-
-  if(tList.includes('Candles')){
-    const candleColors=['#F4B8C1','#FFE066','#8EC4E8'];
-    [-topW*0.22,0,topW*0.22].forEach((cx,ci)=>{
-      const canX=W/2+cx,canY=topLayer-22;
-      ctx.beginPath();ctx.rect(canX-3,canY,6,18);
-      ctx.fillStyle=candleColors[ci%3];ctx.fill();
-      ctx.strokeStyle='rgba(0,0,0,0.1)';ctx.lineWidth=0.5;ctx.stroke();
-      // flame
-      ctx.beginPath();
-      ctx.moveTo(canX,canY);
-      ctx.bezierCurveTo(canX+4,canY-5,canX+5,canY-10,canX,canY-14);
-      ctx.bezierCurveTo(canX-5,canY-10,canX-4,canY-5,canX,canY);
-      ctx.fillStyle='#FFB347';ctx.fill();
-      ctx.beginPath();
-      ctx.moveTo(canX,canY-2);
-      ctx.bezierCurveTo(canX+2,canY-6,canX+2,canY-9,canX,canY-12);
-      ctx.bezierCurveTo(canX-2,canY-9,canX-2,canY-6,canX,canY-2);
-      ctx.fillStyle='#FFEF99';ctx.fill();
-      // drip
-      ctx.beginPath();ctx.ellipse(canX,canY+1,2,3,0,0,Math.PI*2);
-      ctx.fillStyle=shadeColor(candleColors[ci%3],-0.1);ctx.fill();
-    });
-  }
-
-  if(tList.includes('Fondant Figures')){
-    // little fondant star/heart
-    ctx.fillStyle='#FF6B9D';
-    const hx=W/2,hy=topMidY-12;
-    ctx.beginPath();
-    ctx.moveTo(hx,hy+6);
-    ctx.bezierCurveTo(hx-10,hy-2,hx-10,hy-10,hx,hy-4);
-    ctx.bezierCurveTo(hx+10,hy-10,hx+10,hy-2,hx,hy+6);
-    ctx.fill();
-  }
-
-  // Message
+    if(t==='Macarons'){
+      [[W/2-topW*.22,topY-6],[W/2+topW*.2,topY-5]].forEach(([mx,my],mi)=>{
+        const mp=[['#F4B8C1','#E890A0','#FFE4E8'],['#C8E6C9','#90C695','#E8F5E9']];
+        const[tc,bc,cr]=mp[mi%2];
+        const mtg=ctx.createRadialGradient(mx-2,my-6,1,mx,my-4,9);
+        mtg.addColorStop(0,cr);mtg.addColorStop(1,tc);
+        ctx.beginPath();ctx.ellipse(mx,my-5,9,5.5,0,0,Math.PI*2);ctx.fillStyle=mtg;ctx.fill();
+        ctx.beginPath();ctx.rect(mx-9,my-5,18,5);ctx.fillStyle='#FFFAF5';ctx.fill();
+        const mbg=ctx.createRadialGradient(mx-2,my+1,1,mx,my,9);
+        mbg.addColorStop(0,cr);mbg.addColorStop(1,bc);
+        ctx.beginPath();ctx.ellipse(mx,my,9,5.5,0,0,Math.PI*2);ctx.fillStyle=mbg;ctx.fill();
+      });
+    }
+    if(t==='Sprinkles'){
+      const sc=['#FF6B6B','#FFE66D','#4ECDC4','#45B7D1','#96CEB4','#FF99CC'];
+      const rng=s=>{let x=Math.sin(s+1)*1e4;return x-Math.floor(x);};
+      for(let s=0;s<22;s++){
+        const sx=topX+5+(rng(s*3)*.88)*(topW-10),sy=topY-(rng(s*7)*14)+2;
+        ctx.save();ctx.translate(sx,sy);ctx.rotate(rng(s*11)*Math.PI);
+        ctx.beginPath();ctx.rect(-4,-1.5,8,3);ctx.fillStyle=sc[s%6];ctx.fill();ctx.restore();
+      }
+    }
+    if(t==='Chocolate Drip'){
+      for(let d=0;d<6;d++){
+        const rng=s=>{let x=Math.sin(s*4.1+3)*1e4;return x-Math.floor(x);};
+        const drx=topX+topW*(.08+d*.16),dlen=14+rng(d)*20;
+        ctx.beginPath();ctx.moveTo(drx-3.5,topY+2);
+        ctx.bezierCurveTo(drx-5,topY+dlen*.4,drx+5,topY+dlen*.7,drx,topY+dlen);
+        ctx.bezierCurveTo(drx-4,topY+dlen*.7,drx+4,topY+dlen*.4,drx+3.5,topY+2);
+        ctx.closePath();ctx.fillStyle='#3E1800';ctx.fill();
+      }
+    }
+    if(t==='Fondant Figures'){
+      const hx=W/2,hy=topY-14;
+      const hg=ctx.createRadialGradient(hx-2,hy-2,1,hx,hy,12);
+      hg.addColorStop(0,'#FF9EC7');hg.addColorStop(1,'#CC2266');
+      ctx.beginPath();ctx.moveTo(hx,hy+9);
+      ctx.bezierCurveTo(hx-14,hy-2,hx-14,hy-12,hx,hy-5);
+      ctx.bezierCurveTo(hx+14,hy-12,hx+14,hy-2,hx,hy+9);
+      ctx.fillStyle=hg;ctx.fill();
+    }
+  });
   if(opts.message){
     ctx.save();
-    const msgW=topW*0.85;
-    ctx.font=`bold ${Math.max(7,Math.min(10,msgW/opts.message.length*0.9))}px 'Outfit', sans-serif`;
-    ctx.fillStyle=shadeColor(frC,-0.55);
-    ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText(opts.message.slice(0,22),W/2,topLayer-1);
-    ctx.restore();
+    ctx.font=`bold ${Math.max(6,Math.min(9,topW/(opts.message.length+2)))}px 'Nunito',sans-serif`;
+    ctx.fillStyle=shade(frC,-.55);ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.shadowColor='rgba(0,0,0,.1)';ctx.shadowBlur=2;
+    ctx.fillText(opts.message.slice(0,20),W/2,topY);ctx.restore();
   }
 }
 
-// ── HERO FLOATING CAKES ─────────────────────────
-drawCake(document.getElementById('heroFloat1'),{layers:3,flavorColor:'#FFF3C4',frostColor:'#F4B8C1',toppings:['Strawberries','Candles']});
-drawCake(document.getElementById('heroFloat2'),{layers:2,flavorColor:'#A02020',frostColor:'#FFFAF5',toppings:['Fresh Flowers']});
-
-// ── ABOUT CAKE ──────────────────────────────────
+// ABOUT CAKE
 drawCake(document.getElementById('aboutCake'),{layers:4,flavorColor:'#5C3317',frostColor:'#D4901A',toppings:['Gold Flakes','Macarons','Candles'],message:'Sweet Layers'});
 
-// ── MENU DATA ───────────────────────────────────
-const MENU=[
-  {name:'Classic Victoria Sponge',badge:'Bestseller',weight:'1 kg',flavor:'Vanilla',layers:2,cost:750,fC:'#FFF3C4',frC:'#FFFAF5',toppings:['Strawberries','Sprinkles']},
-  {name:'Dark Chocolate Decadence',badge:'Premium',weight:'1.5 kg',flavor:'Chocolate',layers:3,cost:1350,fC:'#3A1F0D',frC:'#8B4513',toppings:['Gold Flakes','Chocolate Drip']},
-  {name:'Red Velvet Romance',badge:'Popular',weight:'1 kg',flavor:'Red Velvet',layers:2,cost:950,fC:'#A02020',frC:'#FFFAF5',toppings:['Fresh Flowers']},
-  {name:'Matcha Zen Garden',badge:'Artisan',weight:'1 kg',flavor:'Matcha',layers:2,cost:1100,fC:'#7DB87A',frC:'#9DC88D',toppings:['Macarons','Gold Flakes']},
-  {name:'Strawberry Fields',badge:'Seasonal',weight:'1 kg',flavor:'Strawberry',layers:2,cost:850,fC:'#E84393',frC:'#F4B8C1',toppings:['Strawberries','Fresh Flowers']},
-  {name:'Caramel Praline Dream',badge:'Indulgent',weight:'1.5 kg',flavor:'Caramel',layers:3,cost:1280,fC:'#C8962E',frC:'#D4901A',toppings:['Gold Flakes','Macarons']},
-];
-const menuGrid=document.getElementById('menuGrid');
-menuGrid.innerHTML=MENU.map((c,i)=>`
-<div class="menu-card">
-  <div class="menu-card-visual" style="background:linear-gradient(135deg,${c.fC}44,${c.frC}66)">
-    <canvas id="mc${i}" width="160" height="170"></canvas>
-    <span class="menu-card-badge">${c.badge}</span>
-  </div>
-  <div class="menu-card-body">
-    <div class="menu-card-name">${c.name}</div>
-    <div class="menu-card-meta"><span>⚖️ ${c.weight}</span><span>🍰 ${c.layers} layers</span><span>🍦 ${c.flavor}</span></div>
-    <div class="menu-card-footer">
-      <span class="menu-price">₹${c.cost.toLocaleString()}</span>
-      <a href="order.html" class="btn-sm">Order →</a>
-    </div>
-  </div>
-</div>`).join('');
-requestAnimationFrame(()=>{
-  MENU.forEach((c,i)=>{
-    const el=document.getElementById('mc'+i);
-    if(el) drawCake(el,{layers:c.layers,flavorColor:c.fC,frostColor:c.frC,toppings:c.toppings});
-  });
-});
-
-// ── REVIEWS ─────────────────────────────────────
+// REVIEWS
 const REVIEWS=[
-  {name:'Priya Reddy',initial:'PR',color:'#C8962E',stars:5,text:'Ordered a 3-tier wedding cake and it was absolutely breathtaking. Everyone kept asking where we got it from. The flavor was as good as the design!',date:'2 weeks ago'},
-  {name:'Ramesh Kumar',initial:'RK',color:'#E84393',stars:5,text:'The custom chocolate cake with gold flakes was out of this world. Jayaprakash sir really puts his heart into every cake. My son\'s birthday was unforgettable.',date:'1 month ago'},
-  {name:'Sunita Varma',initial:'SV',color:'#7DB87A',stars:5,text:'Ordered the Red Velvet Romance and it melted in my mouth. The delivery was on time, packaging was beautiful, and the message writing was perfect. 10/10!',date:'3 weeks ago'},
-  {name:'Aditya Naidu',initial:'AN',color:'#8EC4E8',stars:5,text:'Best bakery in Nellore, hands down. The online ordering was super easy, WhatsApp updates were helpful, and the cake looked exactly like the preview. Amazing!',date:'5 days ago'},
-  {name:'Lakshmi Devi',initial:'LD',color:'#F4B8C1',stars:5,text:'I\'ve ordered 5 times now and every single time it\'s been perfect. The strawberry fields cake with fresh flowers is my absolute favorite. Never going anywhere else!',date:'2 months ago'},
-  {name:'Venkat Rao',initial:'VR',color:'#D4901A',stars:4,text:'The matcha cake was unique and delicious. Packaging could be a little sturdier but the taste and design more than make up for it. Will definitely order again.',date:'1 month ago'},
+  {name:'Priya Reddy',init:'PR',color:'#C8962E',stars:5,text:'Ordered a 3-tier wedding cake and it was absolutely breathtaking. Everyone kept asking where we got it from. The flavor was as good as the design!',date:'2 weeks ago'},
+  {name:'Ramesh Kumar',init:'RK',color:'#E84393',stars:5,text:'The custom chocolate cake with gold flakes was out of this world. Jayaprakash sir really puts his heart into every cake. My son\'s birthday was unforgettable.',date:'1 month ago'},
+  {name:'Sunita Varma',init:'SV',color:'#7DB87A',stars:5,text:'Ordered the Red Velvet and it melted in my mouth. Delivery was on time, packaging was beautiful, and the message writing was perfect. 10/10!',date:'3 weeks ago'},
+  {name:'Aditya Naidu',init:'AN',color:'#8EC4E8',stars:5,text:'Best bakery in Nellore, hands down. The online ordering was super easy and the cake looked exactly like the preview. Amazing!',date:'5 days ago'},
+  {name:'Lakshmi Devi',init:'LD',color:'#F4B8C1',stars:5,text:'I\'ve ordered 5 times now and every single time it\'s been perfect. The strawberry fields cake with fresh flowers is my absolute favorite!',date:'2 months ago'},
+  {name:'Venkat Rao',init:'VR',color:'#D4901A',stars:4,text:'The matcha cake was unique and delicious. Packaging could be sturdier but the taste and design more than make up for it. Will order again!',date:'1 month ago'},
 ];
-document.getElementById('reviewsGrid').innerHTML=REVIEWS.map(r=>`
-<div class="review-card reveal">
-  <div class="review-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
-  <p class="review-text">"${r.text}"</p>
-  <div class="review-author">
-    <div class="review-avatar" style="background:${r.color}">${r.initial}</div>
-    <div><div class="review-name">${r.name}</div><div class="review-date">Google Review · ${r.date}</div></div>
+document.getElementById('revGrid').innerHTML=REVIEWS.map(r=>`
+<div class="rev-card reveal">
+  <div class="rev-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
+  <p class="rev-text">"${r.text}"</p>
+  <div class="rev-author">
+    <div class="rev-avatar" style="background:${r.color}">${r.init}</div>
+    <div><div class="rev-name">${r.name}</div><div class="rev-date">Google Review · ${r.date}</div></div>
   </div>
 </div>`).join('');
 
-// ── SCROLL REVEAL ────────────────────────────────
-const io=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});
-},{threshold:0.12});
+// REVEAL
+const io=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting){el.target.classList.add('visible');io.unobserve(el.target);}});},{threshold:.12});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 </script>
 </body>
